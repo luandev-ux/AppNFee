@@ -1,0 +1,38 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>D:\AppNFe\Pub\</OutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <OutputPath>D:\AppNFe\Pub\</OutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Entidades\Configuracao_fiscal\**" />
+    <Compile Remove="ParametrosRequisicao\**" />
+    <EmbeddedResource Remove="Entidades\Configuracao_fiscal\**" />
+    <EmbeddedResource Remove="ParametrosRequisicao\**" />
+    <None Remove="Entidades\Configuracao_fiscal\**" />
+    <None Remove="ParametrosRequisicao\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ExcelMapper" Version="5.2.352" />
+    <PackageReference Include="System.Collections" Version="4.3.0" />
+    <PackageReference Include="System.Runtime" Version="4.3.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Relatorios\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AppNFe.Core\AppNFe.Core.csproj" />
+  </ItemGroup>
+
+</Project>

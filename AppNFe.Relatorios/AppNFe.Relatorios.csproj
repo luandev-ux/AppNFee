@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>D:\AppNFe\Pub\</OutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <OutputPath>D:\AppNFe\Pub\</OutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AWS.Logger.SeriLog" Version="3.1.1" />
+    <PackageReference Include="FastReport.Core" Version="2021.4.15-demo" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AppNFe.Dominio\AppNFe.Dominio.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="FastReport.ReportBuilder\" />
+  </ItemGroup>
+
+</Project>

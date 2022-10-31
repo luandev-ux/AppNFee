@@ -1,0 +1,35 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>D:\AppNFe\Pub\</OutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <OutputPath>D:\AppNFe\Pub\</OutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Estoque\**" />
+    <EmbeddedResource Remove="Estoque\**" />
+    <None Remove="Estoque\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AppNFe.Core\AppNFe.Core.csproj" />
+    <ProjectReference Include="..\AppNFe.Dominio\AppNFe.Dominio.csproj" />
+    <ProjectReference Include="..\AppNFe.Persistencia\AppNFe.Persistencia.csproj" />
+    <ProjectReference Include="..\AppNFe.Relatorios\AppNFe.Relatorios.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AWSSDK.S3" Version="3.7.6" />
+    <PackageReference Include="ExcelMapper" Version="5.2.352" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.12" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0" />
+  </ItemGroup>
+
+</Project>

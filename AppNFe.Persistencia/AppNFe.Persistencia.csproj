@@ -1,0 +1,38 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>D:\AppNFe\Pub\</OutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <OutputPath>D:\AppNFe\Pub\</OutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Interfaces\Repositorios\Usuarios\**" />
+    <Compile Remove="Interfaces\UnidadesTrabalho\**" />
+    <EmbeddedResource Remove="Interfaces\Repositorios\Usuarios\**" />
+    <EmbeddedResource Remove="Interfaces\UnidadesTrabalho\**" />
+    <None Remove="Interfaces\Repositorios\Usuarios\**" />
+    <None Remove="Interfaces\UnidadesTrabalho\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AWS.Logger.SeriLog" Version="3.1.1" />
+    <PackageReference Include="Dapper.Contrib" Version="2.0.78" />
+    <PackageReference Include="Dapper.FluentMap.Dommel" Version="2.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="6.0.0" />
+    <PackageReference Include="Npgsql" Version="5.0.11" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AppNFe.Core\AppNFe.Core.csproj" />
+    <ProjectReference Include="..\AppNFe.Dominio\AppNFe.Dominio.csproj" />
+  </ItemGroup>
+
+</Project>

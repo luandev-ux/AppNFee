@@ -1,0 +1,58 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <UserSecretsId>796d691e-0133-4fe3-97f4-ca075994ef0c</UserSecretsId>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>D:\AppNFe\Pub\</OutputPath>
+    <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <OutputPath>D:\AppNFe\Pub\</OutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="wwwroot\drive\**" />
+    <Content Remove="wwwroot\drive\**" />
+    <EmbeddedResource Remove="wwwroot\drive\**" />
+    <None Remove="wwwroot\drive\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="aws-logger-errors.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AWS.Logger.SeriLog" Version="3.1.1" />
+    <PackageReference Include="AWSSDK.Core" Version="3.7.5.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="5.0.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+  <ProjectReference Include="..\AppNFe.Dominio\AppNFe.Dominio.csproj" />
+    <ProjectReference Include="..\AppNFe.Persistencia\AppNFe.Persistencia.csproj" />
+    <ProjectReference Include="..\AppNFe.Relatorios\AppNFe.Relatorios.csproj" />
+    <ProjectReference Include="..\AppNFe.Servicos\AppNFe.Servicos.csproj" />
+    <ProjectReference Include="..\AppNFe.Core\AppNFe.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Hubs\" />
+    <Folder Include="IOC\UnidadesTrabalho\" />
+    <Folder Include="wwwroot\importacao-arquivos\temp\" />
+    <Folder Include="wwwroot\relatorios\temp\" />
+  </ItemGroup>
+	
+	<PropertyGroup>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);1591</NoWarn>
+  </PropertyGroup>
+	
+	<ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="" properties_4launchsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>	
+</Project>
