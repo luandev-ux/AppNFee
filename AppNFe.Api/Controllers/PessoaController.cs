@@ -3,9 +3,7 @@ using AppNFe.Core.DominioProblema;
 using AppNFe.Core.Utilitarios;
 using AppNFe.Dominio.DTO.Integracoes.Jobs;
 using AppNFe.Dominio.Entidades.Pessoas;
-using AppNFe.Dominio.Entidades.Usuario;
 using AppNFe.Persistencia.Interfaces.Repositorios;
-using AppNFe.Persistencia.Repositorios.UsuarioRepositorio;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Pipelines.Sockets.Unofficial.Arenas;
@@ -15,81 +13,101 @@ using System.Threading.Tasks;
 
 namespace API.Controllers
 {
-    [ApiController, Route("v1/{contratante}/usuario")]
+    [ApiController, Route("v1/{contratante}/pessoa")]
     [Produces("application/json")]
     [ProducesResponseType(typeof(RetornoRequisicao), 403)]
     [ProducesResponseType(typeof(RetornoRequisicao), 500)]
-    public class UsuarioController : BaseController
+    public class PessoaController : BaseController
     {
-        private IUsuarioRepositorio UsuarioRepositorio;
+        private IPessoaRepositorio PessoaRepositorio;
 
-        public UsuarioController(IConfiguration configuracao,
-                                  IUsuarioRepositorio usuarioRepositorio,
+        public PessoaController(IConfiguration configuracao,
+                                  IPessoaRepositorio pessoaRepositorio,
                                   ILogger logger)
         : base(configuracao, logger)
         {
-            UsuarioRepositorio = usuarioRepositorio;
+            PessoaRepositorio = pessoaRepositorio;
             Logger = logger;
             IdentificadorPermissao = "PER_CADASTRO_USUARIOS";
             IdentificadorRecurso = "CADASTRO_USUARIOS";
         }
 
+        #region Inclusão novo usuário
         /// <summary>
         /// Incluir novo usuário.
         /// </summary>
-        /// <param name="usuario">Objeto - Pessoa</param>
+        /// <param name="pessoa">Objeto - Pessoa</param>
         /// <response code="200">Usuário cadastrado com sucesso.</response>
         /// <response code="203">Informações inválidas.</response>
         /// <response code="403">Usuário não possui permissão para executar essa operação.</response>
         /// <response code="500">Desculpe-nos ocorreu um erro ao cadastrar o usuário.</response>
         [HttpPost]
-        [ProducesResponseType(typeof(Usuario), 200)]
+        [Route("incluir")]
+        [ProducesResponseType(typeof(Pessoa), 200)]
         [ProducesResponseType(typeof(RetornoRequisicao), 203)]
 
-        public async Task<IActionResult> InserirAsync(Usuario usuario)
+        public async Task<IActionResult> InserirAsync(Pessoa pessoa)
         {
             try
             {
-                var retornoValidacao = await ValidarInformacoes(usuario);
+                var retornoValidacao = await ValidarInformacoes(pessoa);
                 if (!retornoValidacao.VerificarSucesso()) return RetornoRequisicaoInformacoesInvalidas(retornoValidacao);
 
-                var retorno = await UsuarioRepositorio.InserirAsync(usuario);
+                var retorno = await PessoaRepositorio.InserirAsync(pessoa);
                 if (retorno.Status)
                     return Ok(UtilitarioRetornoRequisicao.GerarRetornoSucesso(retorno.CodigoRegistro, "Usuário cadastrado com sucesso."));
             }
             catch (Exception e)
             {
-                GravarLogErro("UsuarioController", "InserirAsync", e.Message);
+                GravarLogErro("PessoaController", "InserirAsync", e.Message);
             }
             return BadRequest(UtilitarioRetornoRequisicao.GerarRetornoErro("Erro ao cadastrar usuário."));
         }
-
+        #endregion
+        #region Alteração de usuário
         /// <summary>
-        /// Excluir um Usuário
+        /// Alterar um Usuário
         /// </summary>
-        /// <param name="usuario">Objeto - Usuario</param>
+        /// <param name="pessoa">Objeto - Pessoa</param>
         /// <response code="200">Usuário cadastrado com sucesso.</response>
         /// <response code="203">Informações inválidas.</response>
         /// <response code="403">Usuário não possui permissão para executar essa operação.</response>
         /// <response code="500">Desculpe-nos ocorreu um erro ao cadastrar o usuário.</response>
-        [HttpPut]
-        [ProducesResponseType(typeof(Usuario), 200)]
+        [HttpPost]
+        [Route("alterar")]
+        public async Task<IActionResult> AtualizarAsync(Pessoa pessoa)
+        {
+            var result = await PessoaRepositorio.AtualizarAsync(pessoa);
+            return Ok(result);
+        }
+        #endregion
+        #region Exclusão de usuário
+        /// <summary>
+        /// Excluir um Usuário
+        /// </summary>
+        /// <param name="pessoa">Objeto - Pessoa</param>
+        /// <response code="200">Usuário cadastrado com sucesso.</response>
+        /// <response code="203">Informações inválidas.</response>
+        /// <response code="403">Usuário não possui permissão para executar essa operação.</response>
+        /// <response code="500">Desculpe-nos ocorreu um erro ao cadastrar o usuário.</response>
+        [HttpDelete]
+        [Route("excluir")]
+        [ProducesResponseType(typeof(Pessoa), 200)]
         [ProducesResponseType(typeof(RetornoRequisicao), 203)]
-        public async Task<IActionResult> ExcluirAsync(long usuario)
+        public async Task<IActionResult> ExcluirAsync(long pessoa)
         {
             try
             {
-                var retorno = await UsuarioRepositorio.ExcluirAsync(usuario);
+                var retorno = await PessoaRepositorio.ExcluirAsync(pessoa);
                 if (retorno.Status)
                     return Ok(UtilitarioRetornoRequisicao.GerarRetornoSucesso(retorno.CodigoRegistro, "Usuário excluído com sucesso."));
             }
             catch (Exception e)
             {
-                GravarLogErro("UsuarioController", "ExcluirAsync", e.Message);
+                GravarLogErro("PessoaController", "ExcluirAsync", e.Message);
             }
             return BadRequest(UtilitarioRetornoRequisicao.GerarRetornoErro("Erro ao excluir usuário."));
         }
+        #endregion
     }
 }
-        
-        

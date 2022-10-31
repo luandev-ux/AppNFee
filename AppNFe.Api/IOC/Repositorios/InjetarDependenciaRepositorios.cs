@@ -1,8 +1,7 @@
-﻿using AppNFe.Persistencia.Repositorios.EmpresaRepositorio;
-using AppNFe.Persistencia.Repositorios.UsuarioRepositorio;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using AppNFe.Persistencia.Interfaces.Repositorios;
 using AppNFe.Persistencia.Repositorios;
+using AppNFe.Persistencia.Mapeadores;
 
 namespace AppNFe.Api.IOC.Repositorios
 {
@@ -13,6 +12,7 @@ namespace AppNFe.Api.IOC.Repositorios
             services.AddScoped<IUsuarioRepositorio, UsuarioRepositorio>();
             services.AddScoped<IEmpresaRepositorio, EmpresaRepositorio>();
             services.AddScoped<IPessoaRepositorio, PessoaRepositorio>();
+            services.AddScoped<IConfiguracaoFiscalRepositorio, ConfiguracaoFiscalRepositorio>();
 
         }
     }

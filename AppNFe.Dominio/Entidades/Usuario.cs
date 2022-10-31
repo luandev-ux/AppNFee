@@ -1,13 +1,13 @@
 ﻿using AppNFe.Core.MensagemPadronizada;
 using System.ComponentModel.DataAnnotations;
 
-namespace AppNFe.Dominio.Entidades.Usuario
+namespace AppNFe.Dominio.Entidades
 {
     [Display(Name = "Usuário")]
     public class Usuario
     {
         #region Propriedades
-        
+
         #region Codigo Usuario
         [Required(ErrorMessageResourceType = typeof(Mensagem), ErrorMessageResourceName = "MSG_E001")]
         [Display(Name = "Id do Usuário")]
@@ -32,7 +32,7 @@ namespace AppNFe.Dominio.Entidades.Usuario
         [Display(Name = "E-mail")]
         public string Email { get; set; }
         #endregion
-        
+
         #endregion
 
     }

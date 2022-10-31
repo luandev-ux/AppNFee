@@ -1,7 +1,7 @@
 ﻿using Dapper.FluentMap.Dommel.Mapping;
-using AppNFe.Dominio.Entidades.Usuario;
+using AppNFe.Dominio.Entidades;
 
-namespace AppNFe.Persistencia.Mapeadores.UsuariosMap
+namespace AppNFe.Persistencia.Mapeadores
 {
     public class UsuarioMap : DommelEntityMap<Usuario>
     {

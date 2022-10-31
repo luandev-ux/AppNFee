@@ -1,4 +1,4 @@
-﻿using AppNFe.Dominio.Entidades.Usuario;
+﻿using AppNFe.Dominio.Entidades;
 using System;
 
 namespace AppNFe.Dominio.DTO

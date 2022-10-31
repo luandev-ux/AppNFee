@@ -6,7 +6,6 @@ using AppNFe.Core.Enumeradores;
 using AppNFe.Core.Persistencia.Consulta;
 using AppNFe.Core.Utilitarios;
 using AppNFe.Dominio.Consulta;
-using AppNFe.Dominio.Entidades.Usuario;
 using AppNFe.Dominio.Relatorios;
 using Serilog;
 using System;
@@ -253,23 +252,23 @@ namespace AppNFe.Api.Controllers.Base
         }
 
         [NonAction]
-        protected UsuarioRegistroAtividade RegistrarAtividadeUsuario(List<long> empresas, string detalhe)
+        protected UsuariosRegistroAtividade RegistrarAtividadeUsuario(List<long> empresas, string detalhe)
         {
-            UsuarioRegistroAtividade registroAtividade = new(empresas, ObterCodigoUsuario(), IdentificadorRecurso, detalhe);
+            UsuariosRegistroAtividade registroAtividade = new(empresas, ObterCodigoUsuario(), IdentificadorRecurso, detalhe);
             return registroAtividade;
         }
 
         [NonAction]
-        protected UsuarioRegistroAtividade RegistrarAtividadeUsuario(long empresa, string detalhe)
+        protected UsuariosRegistroAtividade RegistrarAtividadeUsuario(long empresa, string detalhe)
         {
-            UsuarioRegistroAtividade registroAtividade = new(empresa, ObterCodigoUsuario(), IdentificadorRecurso, detalhe);
+            UsuariosRegistroAtividade registroAtividade = new(empresa, ObterCodigoUsuario(), IdentificadorRecurso, detalhe);
             return registroAtividade;
         }
 
         [NonAction]
-        protected UsuarioRegistroAtividade RegistrarAtividadeUsuario(long empresa, string identificadorRecurso, string detalhe)
+        protected UsuariosRegistroAtividade RegistrarAtividadeUsuario(long empresa, string identificadorRecurso, string detalhe)
         {
-            UsuarioRegistroAtividade registroAtividade = new(empresa, ObterCodigoUsuario(), identificadorRecurso, detalhe);
+            UsuariosRegistroAtividade registroAtividade = new(empresa, ObterCodigoUsuario(), identificadorRecurso, detalhe);
             return registroAtividade;
         }              
     }

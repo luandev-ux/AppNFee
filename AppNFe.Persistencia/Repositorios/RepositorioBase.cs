@@ -17,7 +17,7 @@ using AppNFe.Persistencia.Mapeadores;
 using AppNFe.Core.Persistencia.Consulta;
 using Dapper;
 using AppNFe.Core.Utilitarios;
-using AppNFe.Dominio.Entidades.Usuario;
+using AppNFe.Dominio.Entidades;
 
 namespace AppNFe.Persistencia.Repositorios
 {
@@ -509,7 +509,7 @@ namespace AppNFe.Persistencia.Repositorios
         /// <param name="objeto"></param>
         /// <param name="registroAtividade"></param>
         /// <returns></returns>
-        public virtual async Task<Retorno> InserirAsync(TEntidade objeto, UsuarioRegistroAtividade registroAtividade = null)
+        public virtual async Task<Retorno> InserirAsync(TEntidade objeto, UsuariosRegistroAtividade registroAtividade = null)
         {
             try
             {
@@ -542,7 +542,7 @@ namespace AppNFe.Persistencia.Repositorios
         /// <param name="objeto"></param>
         /// <param name="registroAtividade"></param>
         /// <returns></returns>
-        public virtual async Task<Retorno> AtualizarAsync(TEntidade objeto, UsuarioRegistroAtividade registroAtividade = null)
+        public virtual async Task<Retorno> AtualizarAsync(TEntidade objeto, UsuariosRegistroAtividade registroAtividade = null)
         {
             try
             {
@@ -575,7 +575,7 @@ namespace AppNFe.Persistencia.Repositorios
         /// <param name="codigo"></param>
         /// <param name="registroAtividade"></param>
         /// <returns></returns>
-        public virtual async Task<Retorno> ExcluirAsync(long codigo, UsuarioRegistroAtividade registroAtividade = null)
+        public virtual async Task<Retorno> ExcluirAsync(long codigo, UsuariosRegistroAtividade registroAtividade = null)
         {
             try
             {
@@ -603,7 +603,7 @@ namespace AppNFe.Persistencia.Repositorios
             return new Retorno("Não foi possível excluir o registro!");
         }
 
-        public async Task<Retorno> InserirRegistroAtividadeAsync(UsuarioRegistroAtividade registroAtividade)
+        public async Task<Retorno> InserirRegistroAtividadeAsync(UsuariosRegistroAtividade registroAtividade)
         {
             var retornoFalha = new Retorno("Não foi possível salvar as informações do registro de atividade do usuário!");
             try
@@ -628,11 +628,11 @@ namespace AppNFe.Persistencia.Repositorios
             }
         }
 
-        public async Task<Retorno> InserirRegistroAtividadeAsync(UsuarioRegistroAtividade registroAtividade, string detalhe)
+        public async Task<Retorno> InserirRegistroAtividadeAsync(UsuariosRegistroAtividade registroAtividade, string detalhe)
         {
             if (registroAtividade != null)
             {
-                var registroAtividadeNovo = new UsuarioRegistroAtividade();
+                var registroAtividadeNovo = new UsuariosRegistroAtividade();
 
                 registroAtividadeNovo.CodigoUsuario = registroAtividade.CodigoUsuario;
                 registroAtividadeNovo.Empresas = registroAtividade.Empresas;

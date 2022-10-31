@@ -15,15 +15,15 @@ using AppNFe.Core.DominioProblema;
 using System.Text;
 using AppNFe.Dominio.DTO.Usuarios;
 using AppNFe.Persistencia.Interfaces.Repositorios;
-using AppNFe.Dominio.Entidades.Pessoas;
 using AppNFe.Dominio.Entidades;
 
 namespace AppNFe.Persistencia.Repositorios
 {
-    public class PessoaRepositorio : RepositorioBase<Pessoa>, IPessoaRepositorio
+    public class UsuarioRepositorio : RepositorioBase<Usuario>, IUsuarioRepositorio
     {
-        public PessoaRepositorio(IGerenteConexao gerenteConexao, ILogger logger) : base(gerenteConexao, logger) { }
+        public UsuarioRepositorio(IGerenteConexao gerenteConexao, ILogger logger) : base(gerenteConexao, logger) { }
 
+        #region Obter Usuário
         public async Task<ListaPaginada<Usuario>> ObterUsuarios(ParametrosConsulta parametrosConsulta, List<FiltroGenerico> filtros)
         {
             IEnumerable<Usuario> listaUsuarios = new List<Usuario>();
@@ -58,33 +58,32 @@ namespace AppNFe.Persistencia.Repositorios
                       parametrosConsulta.NumeroPagina,
                       parametrosConsulta.QtdeRegistrosPagina);
         }
-
-        public async Task<IEnumerable<ItemConsultaRapida>> ConsultaRapida(ParametrosConsultaRapida parametrosConsultaRapida, bool apresentarCodigo)
+        #endregion
+        #region Select Usuario
+        public async Task<IEnumerable<ItemConsultaRapida>> ConsultaRapida(string termo, List<int> empresas)
         {
-            IEnumerable<ItemConsultaRapida> listaItens = new List<ItemConsultaRapida>();
+            IEnumerable<ItemConsultaRapida> listaUsuarios = new List<ItemConsultaRapida>();
             try
             {
-                bool filtrarEmpresas = parametrosConsultaRapida.Empresas != null && parametrosConsultaRapida.Empresas.Count > 0;
+                var sql = new StringBuilder();
+                sql.Append(" SELECT TU.pk_usuario AS Codigo, TU.nome AS Descricao ");
+                sql.Append(" FROM tb_usuario TU ");
+                sql.Append(" INNER JOIN tb_usuario_empresa TUE ON TUE.fk_usuario = TU.pk_usuario ");
+                sql.Append(" WHERE TU.nome LIKE '%" + termo + "%' AND TUE.fk_empresa IN (" + string.Join(",", empresas) + ") ");
+                sql.Append(" GROUP BY TU.pk_usuario,TU.nome ");
+                sql.Append(" ORDER BY TU.nome ");
 
-                EstruturaConsultaRapida estruturaConsultaRapida = new EstruturaConsultaRapida();
-                estruturaConsultaRapida.TabelaDB = filtrarEmpresas ? "tb_usuario TU INNER JOIN tb_usuario_empresa TUE ON TUE.fk_usuario = TU.pk_usuario " : " tb_usuario TU ";
-                estruturaConsultaRapida.ColunaCodigoDB = "TU.pk_usuario";
-                estruturaConsultaRapida.ColunaTextoIdentificacaoDB = apresentarCodigo ? "TU.pk_usuario ||' - '|| TU.nome" : "TU.nome";
-                estruturaConsultaRapida.CondicaoApenasAtivos = " TU.ativo = true ";
-
-                if (filtrarEmpresas)
-                    estruturaConsultaRapida.CondicaoAdicional = " AND TUE.fk_empresa IN (" + string.Join(",", parametrosConsultaRapida.Empresas) + ") ";
-
-                listaItens = await conexaoDB.QueryAsync<ItemConsultaRapida>(MontaConsultaRapidaSQL(estruturaConsultaRapida, parametrosConsultaRapida));
+                listaUsuarios = await conexaoDB.QueryAsync<ItemConsultaRapida>(sql.ToString());
             }
             catch (Exception e)
             {
                 GravarLogErro("UsuarioRepositorio", "ConsultaRapida", e);
             }
-            return listaItens;
+            return listaUsuarios;
         }
-
-        public override async Task<Retorno> InserirAsync(Pessoa objeto, UsuariosRegistroAtividade registroAtividade)
+        #endregion
+        #region Inserir Usuario
+        public override async Task<Retorno> InserirAsync(Usuario objeto, UsuariosRegistroAtividade registroAtividade)
         {
             var retorno = new Retorno();
             try
@@ -97,5 +96,6 @@ namespace AppNFe.Persistencia.Repositorios
             }
             return retorno;
         }
+        #endregion
     }
 }

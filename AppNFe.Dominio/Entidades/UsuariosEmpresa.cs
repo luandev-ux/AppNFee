@@ -1,9 +1,9 @@
 ﻿using AppNFe.Core.Attributes;
 using AppNFe.Core.MensagemPadronizada;
 
-namespace AppNFe.Dominio.Entidades.Usuario
+namespace AppNFe.Dominio.Entidades
 {
-    public class UsuarioEmpresa
+    public class UsuariosEmpresa
     {
         public long Codigo { get; set; }
         public long CodigoUsuario { get; set; }

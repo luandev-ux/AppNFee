@@ -1,7 +1,7 @@
 ﻿using AppNFe.Core.MensagemPadronizada;
 using System.ComponentModel.DataAnnotations;
 
-namespace AppNFe.Dominio.Entidades.Produtos
+namespace AppNFe.Dominio.Entidades
 {
     [Display(Name = "Produto")]
     public class Produto

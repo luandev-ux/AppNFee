@@ -1,7 +1,7 @@
 ﻿using Dapper.FluentMap.Dommel.Mapping;
-using AppNFe.Dominio.Entidades.Empresas;
+using AppNFe.Dominio.Entidades;
 
-namespace AppNFe.Persistencia.Mapeadores.EmpresasMap
+namespace AppNFe.Persistencia.Mapeadores
 {
     public class ProdutoMap : DommelEntityMap<Empresa>
     {
@@ -14,8 +14,8 @@ namespace AppNFe.Persistencia.Mapeadores.EmpresasMap
             Map(c => c.Cnpj).ToColumn("cnpj");
             Map(c => c.Endereco).ToColumn("endereco");
             Map(c => c.Bairro).ToColumn("bairro");
-            
-            
+
+
         }
     }
 }

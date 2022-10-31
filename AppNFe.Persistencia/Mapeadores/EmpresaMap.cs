@@ -1,7 +1,7 @@
 ﻿using Dapper.FluentMap.Dommel.Mapping;
-using AppNFe.Dominio.Entidades.Empresas;
+using AppNFe.Dominio.Entidades;
 
-namespace AppNFe.Persistencia.Mapeadores.EmpresasMap
+namespace AppNFe.Persistencia.Mapeadores
 {
     public class EmpresaMap : DommelEntityMap<Empresa>
     {

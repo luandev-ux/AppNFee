@@ -1,4 +1,4 @@
-﻿using AppNFe.Dominio.Entidades.Empresas;
+﻿using AppNFe.Dominio.Entidades;
 
 namespace AppNFe.Persistencia.Interfaces.Repositorios
 {

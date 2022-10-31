@@ -5,7 +5,6 @@ using AppNFe.Core.Persistencia.Consulta;
 using AppNFe.Dominio.Consulta;
 using AppNFe.Persistencia.Cache;
 using AppNFe.Persistencia.Interfaces;
-using AppNFe.Dominio.Entidades.Usuario;
 using Serilog;
 using System;
 using System.Collections.Generic;
@@ -14,46 +13,46 @@ using System.Threading.Tasks;
 using Dommel;
 using AppNFe.Core.DominioProblema;
 using System.Text;
-using AppNFe.Dominio.DTO.Usuarios;
 using AppNFe.Persistencia.Interfaces.Repositorios;
+using AppNFe.Dominio.Entidades;
 
-namespace AppNFe.Persistencia.Repositorios.UsuarioRepositorio
+namespace AppNFe.Persistencia.Repositorios
 {
-    public class UsuarioRepositorio : RepositorioBase<Usuario>, IUsuarioRepositorio
+    public class EmpresaRepositorio : RepositorioBase<Empresa>, IEmpresaRepositorio
     {
-        public UsuarioRepositorio(IGerenteConexao gerenteConexao, ILogger logger) : base(gerenteConexao, logger) { }
+        public EmpresaRepositorio(IGerenteConexao gerenteConexao, ILogger logger) : base(gerenteConexao, logger) { }
 
-        public async Task<ListaPaginada<Usuario>> ObterUsuarios(ParametrosConsulta parametrosConsulta, List<FiltroGenerico> filtros)
+        public async Task<ListaPaginada<Empresa>> ObterEmpresas(ParametrosConsulta parametrosConsulta, List<FiltroGenerico> filtros)
         {
-            IEnumerable<Usuario> listaUsuarios = new List<Usuario>();
+            IEnumerable<Empresa> listaEmpresas = new List<Empresa>();
             try
             {
                 string filtroEmpresa = "";
                 string filtrosSQL = "";
-                string agruparPor = " TU.pk_usuario,TU.nome,TU.login,TU.senha,TU.email,TU.imagem,TU.ativo ";
+                string agruparPor = " TU.pk_empresa,TU.nome,TU.login,TU.senha,TU.email,TU.imagem,TU.ativo ";
 
                 filtroEmpresa = " WHERE TUE.fk_empresa IN (" + string.Join(",", parametrosConsulta.Empresas) + ") ";
 
                 if (parametrosConsulta.CodigosSelecionados != null && parametrosConsulta.CodigosSelecionados.Count() > 0)
                 {
-                    filtrosSQL = " AND TU.pk_usuario IN (" + string.Join(",", parametrosConsulta.CodigosSelecionados.Select(c => c)) + ") GROUP BY " + agruparPor;
+                    filtrosSQL = " AND TU.pk_empresa IN (" + string.Join(",", parametrosConsulta.CodigosSelecionados.Select(c => c)) + ") GROUP BY " + agruparPor;
                 }
 
                 var sql = new StringBuilder();
                 sql.Append(" SELECT TU.* ");
-                sql.Append(" FROM tb_usuario TU ");
-                sql.Append(" INNER JOIN tb_usuario_empresa TUE ON TUE.fk_usuario = TU.pk_usuario ");
+                sql.Append(" FROM tb_empresa TU ");
+                sql.Append(" INNER JOIN tb_empresa_empresa TUE ON TUE.fk_empresa = TU.pk_empresa ");
                 sql.Append(" " + filtroEmpresa + filtrosSQL + " ");
 
-                listaUsuarios = await conexaoDB.QueryAsync<Usuario>(sql.ToString());
+                listaEmpresas = await conexaoDB.QueryAsync<Empresa>(sql.ToString());
 
             }
             catch (Exception e)
             {
-                GravarLogErro("UsuarioRepositorio", "ObterUsuarios", e);
+                GravarLogErro("EmpresaRepositorio", "ObterEmpresas", e);
             }
 
-            return ListaPaginada<Usuario>.ToListaPaginada(listaUsuarios,
+            return ListaPaginada<Empresa>.ToListaPaginada(listaEmpresas,
                       parametrosConsulta.NumeroPagina,
                       parametrosConsulta.QtdeRegistrosPagina);
         }
@@ -66,9 +65,9 @@ namespace AppNFe.Persistencia.Repositorios.UsuarioRepositorio
                 bool filtrarEmpresas = parametrosConsultaRapida.Empresas != null && parametrosConsultaRapida.Empresas.Count > 0;
 
                 EstruturaConsultaRapida estruturaConsultaRapida = new EstruturaConsultaRapida();
-                estruturaConsultaRapida.TabelaDB = filtrarEmpresas ? "tb_usuario TU INNER JOIN tb_usuario_empresa TUE ON TUE.fk_usuario = TU.pk_usuario " : " tb_usuario TU ";
-                estruturaConsultaRapida.ColunaCodigoDB = "TU.pk_usuario";
-                estruturaConsultaRapida.ColunaTextoIdentificacaoDB = apresentarCodigo ? "TU.pk_usuario ||' - '|| TU.nome" : "TU.nome";
+                estruturaConsultaRapida.TabelaDB = filtrarEmpresas ? "tb_empresa TU INNER JOIN tb_empresa_empresa TUE ON TUE.fk_empresa = TU.pk_empresa " : " tb_empresa TU ";
+                estruturaConsultaRapida.ColunaCodigoDB = "TU.pk_empresa";
+                estruturaConsultaRapida.ColunaTextoIdentificacaoDB = apresentarCodigo ? "TU.pk_empresa ||' - '|| TU.nome" : "TU.nome";
                 estruturaConsultaRapida.CondicaoApenasAtivos = " TU.ativo = true ";
 
                 if (filtrarEmpresas)
@@ -78,21 +77,21 @@ namespace AppNFe.Persistencia.Repositorios.UsuarioRepositorio
             }
             catch (Exception e)
             {
-                GravarLogErro("UsuarioRepositorio", "ConsultaRapida", e);
+                GravarLogErro("EmpresaRepositorio", "ConsultaRapida", e);
             }
             return listaItens;
         }
 
-        public override async Task<Retorno> InserirAsync(Usuario objeto, UsuarioRegistroAtividade registroAtividade)
+        public override async Task<Retorno> InserirAsync(Empresa empresa, UsuariosRegistroAtividade registroAtividade)
         {
             var retorno = new Retorno();
             try
             {
-                retorno = await base.InserirAsync(objeto);
+                retorno = await base.InserirAsync(empresa);
             }
             catch (Exception e)
             {
-                GravarLogErro("UsuarioRepositorio", "InserirAsync", e);
+                GravarLogErro("EmpresaRepositorio", "InserirAsync", e);
             }
             return retorno;
         }

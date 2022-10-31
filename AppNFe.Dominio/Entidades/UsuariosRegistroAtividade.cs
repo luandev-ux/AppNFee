@@ -1,23 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace AppNFe.Dominio.Entidades.Usuario
+namespace AppNFe.Dominio.Entidades
 {
-    public class UsuarioRegistroAtividade
+    public class UsuariosRegistroAtividade
     {
         public long Codigo { get; set; }
         public long CodigoUsuario { get; set; }
         public string Recurso { get; set; }
         public string Detalhe { get; set; }
         public DateTime DataHora { get; set; }
-        public List<UsuarioRegistroAtividadeEmpresa> Empresas { get; set; }
+        public List<UsuariosRegistroAtividadeEmpresa> Empresas { get; set; }
 
-        public UsuarioRegistroAtividade()
+        public UsuariosRegistroAtividade()
         {
 
         }
 
-        public UsuarioRegistroAtividade(List<UsuarioRegistroAtividadeEmpresa> empresas, long codigoUsuario, string recurso)
+        public UsuariosRegistroAtividade(List<UsuariosRegistroAtividadeEmpresa> empresas, long codigoUsuario, string recurso)
         {
             Empresas = empresas;
             CodigoUsuario = codigoUsuario;
@@ -25,22 +25,22 @@ namespace AppNFe.Dominio.Entidades.Usuario
             DataHora = DateTime.Now;
         }
 
-        public UsuarioRegistroAtividade(long codigoEmpresa, long codigoUsuario, string recurso, string detalhe)
+        public UsuariosRegistroAtividade(long codigoEmpresa, long codigoUsuario, string recurso, string detalhe)
         {
-            Empresas = new List<UsuarioRegistroAtividadeEmpresa>();
-            Empresas.Add(new UsuarioRegistroAtividadeEmpresa { CodigoEmpresa = codigoEmpresa });
+            Empresas = new List<UsuariosRegistroAtividadeEmpresa>();
+            Empresas.Add(new UsuariosRegistroAtividadeEmpresa { CodigoEmpresa = codigoEmpresa });
             CodigoUsuario = codigoUsuario;
             Recurso = recurso;
             Detalhe = detalhe;
             DataHora = DateTime.Now;
         }
 
-        public UsuarioRegistroAtividade(List<long> empresas, long codigoUsuario, string recurso, string detalhe)
+        public UsuariosRegistroAtividade(List<long> empresas, long codigoUsuario, string recurso, string detalhe)
         {
-            Empresas = new List<UsuarioRegistroAtividadeEmpresa>();
+            Empresas = new List<UsuariosRegistroAtividadeEmpresa>();
             foreach (var empresa in empresas)
             {
-                Empresas.Add(new UsuarioRegistroAtividadeEmpresa { CodigoEmpresa = empresa });
+                Empresas.Add(new UsuariosRegistroAtividadeEmpresa { CodigoEmpresa = empresa });
             }
             CodigoUsuario = codigoUsuario;
             Recurso = recurso;
@@ -48,7 +48,7 @@ namespace AppNFe.Dominio.Entidades.Usuario
             DataHora = DateTime.Now;
         }
 
-        public UsuarioRegistroAtividade(UsuarioRegistroAtividade registroAtividade, string detalhe)
+        public UsuariosRegistroAtividade(UsuariosRegistroAtividade registroAtividade, string detalhe)
         {
             CodigoUsuario = registroAtividade.CodigoUsuario;
             Recurso = registroAtividade.Recurso;

@@ -3,7 +3,7 @@ using AppNFe.Core.MensagemPadronizada;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace AppNFe.Dominio.Entidades.Empresas
+namespace AppNFe.Dominio.Entidades
 {
     [Display(Name = "Empresa")]
     public class Empresa

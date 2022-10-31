@@ -1,6 +1,6 @@
-﻿namespace AppNFe.Dominio.Entidades.Usuario
+﻿namespace AppNFe.Dominio.Entidades
 {
-    public class UsuarioRegistroAtividadeEmpresa
+    public class UsuariosRegistroAtividadeEmpresa
     {
         public long Codigo { get; set; }
         public long CodigoRegistroAtividade { get; set; }

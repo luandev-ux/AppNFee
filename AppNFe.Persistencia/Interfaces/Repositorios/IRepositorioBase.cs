@@ -1,5 +1,6 @@
 ﻿using AppNFe.Core.DominioProblema;
-using AppNFe.Dominio.Entidades.Usuario;
+using AppNFe.Dominio.Entidades;
+using AppNFe.Dominio.Entidades.Pessoas;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -16,10 +17,10 @@ namespace AppNFe.Persistencia.Interfaces.Repositorios
         Task<TEntidade> ObterPeloCodigoAsync(long codigo);
         Task<TEntidade> ObterPeloCodigoLazyAsync(long codigo);
         Task<IEnumerable<TEntidade>> ObterTodosRegistrosAsync();
-        Task<Retorno> InserirAsync(TEntidade obj, UsuarioRegistroAtividade registroAtividade = null);
-        Task<Retorno> AtualizarAsync(TEntidade obj, UsuarioRegistroAtividade registroAtividade = null);
-        Task<Retorno> ExcluirAsync(long codigo, UsuarioRegistroAtividade registroAtividade = null);
-        Task<Retorno> InserirRegistroAtividadeAsync(UsuarioRegistroAtividade registroAtividade);
+        Task<Retorno> InserirAsync(TEntidade obj, UsuariosRegistroAtividade registroAtividade = null);
+        Task<Retorno> AtualizarAsync(TEntidade obj, UsuariosRegistroAtividade registroAtividade = null);
+        Task<Retorno> ExcluirAsync(long codigo, UsuariosRegistroAtividade registroAtividade = null);
+        Task<Retorno> InserirRegistroAtividadeAsync(UsuariosRegistroAtividade registroAtividade);
         Task<Retorno> ValidarEntidadesReferenciadas(TEntidade objeto);
     }
 }

@@ -9,7 +9,7 @@ using AppNFe.Dominio.Entidades;
 
 namespace AppNFe.Persistencia.Interfaces.Repositorios
 {
-    public interface IUsuarioRepositorio : IRepositorioBase<Usuario>
+    public interface IConfiguracaoFiscalRepositorio : IRepositorioBase<ConfiguracaoFiscal>
     {
 
     }
