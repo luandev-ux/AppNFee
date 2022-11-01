@@ -92,7 +92,7 @@ namespace AppNFe.Persistencia.Repositorios
 
             var c = new DynamicParameters();
             //nome, nome_fantasia, cnpj_cpf, inscricao_estadual, endereco, bairro, cidade, uf, cep, telefone, email, tipo_pessoa
-            c.Add("pk_id", objeto.Nome);
+            c.Add("pk_id", objeto.Nome);d
             c.Add("nome", objeto.Nome);
             c.Add("nome_fantasia", objeto.NomeFantasia);
             c.Add("cnpj_cpf", objeto.CnpjCpf);
