@@ -17,6 +17,8 @@ using AppNFe.Dominio.DTO.Usuarios;
 using AppNFe.Persistencia.Interfaces.Repositorios;
 using AppNFe.Dominio.Entidades.Pessoas;
 using AppNFe.Dominio.Entidades;
+using Microsoft.Extensions.Configuration;
+using System.Collections;
 
 namespace AppNFe.Persistencia.Repositorios
 {
@@ -84,18 +86,72 @@ namespace AppNFe.Persistencia.Repositorios
             return listaItens;
         }
 
-        public override async Task<Retorno> InserirAsync(Pessoa objeto, UsuariosRegistroAtividade registroAtividade)
+        public override async Task<Retorno> InserirAsync(Pessoa objeto, UsuariosRegistroAtividade registroAtividade = null)
         {
-            var retorno = new Retorno();
-            try
+            var retorno = 0;
+
+            var c = new DynamicParameters();
+            //nome, nome_fantasia, cnpj_cpf, inscricao_estadual, endereco, bairro, cidade, uf, cep, telefone, email, tipo_pessoa
+            c.Add("pk_id", objeto.Nome);
+            c.Add("nome", objeto.Nome);
+            c.Add("nome_fantasia", objeto.NomeFantasia);
+            c.Add("cnpj_cpf", objeto.CnpjCpf);
+            c.Add("inscricao_estadual", objeto.InscricaoEstadual);
+            c.Add("endereco", objeto.Endereco);
+            c.Add("bairro", objeto.Bairro);
+            c.Add("cidade", objeto.Cidade);
+            c.Add("uf", objeto.Uf);
+            c.Add("cep", objeto.Cep);
+            c.Add("telefone", objeto.Telefone);
+            c.Add("email", objeto.Email);
+            c.Add("tipo_pessoa", objeto.TipoPessoa);
+            c.Add("pk_id", objeto.Clientes);
+            c.Add("fk_pessoa", objeto.Clientes);
+            c.Add("fk_contribuinte", objeto.Clientes);
+            c.Add("pk_id", objeto.Fornecedores);
+            c.Add("fk_pessoa", objeto.Fornecedores);
+
+            using (var transaction = conexaoDB.BeginTransaction())
             {
-                retorno = await base.InserirAsync(objeto);
+                try
+                {
+                    retorno = await conexaoDB.ExecuteAsync("INSERT INTO pessoa (nome, nome_fantasia, cnpj_cpf, inscricao_estadual, endereco, bairro, cidade, uf, cep, telefone, email, tipo_pessoa) VALUES (@nome, @nome_fantasia, @cnpj_cpf, @inscricao_estadual, @endereco, @bairro, @cidade, @uf, @cep, @telefone, @email, @tipo_pessoa)", c, transaction);
+                    if (retorno > 0)
+                    {
+                        var id = await conexaoDB.QueryFirstOrDefaultAsync<int>("SELECT MAX(pk_id) FROM pessoa", transaction: transaction);
+                        if (objeto.Clientes != null)
+                        {
+                            foreach (var item in objeto.Clientes)
+                            {
+                                c = new DynamicParameters();
+                                c.Add("fk_pessoa", id);
+                                c.Add("fk_contribuinte", item);
+                                retorno = await conexaoDB.ExecuteAsync("INSERT INTO tb_cliente (fk_pessoa, fk_contribuinte) VALUES (@fk_pessoa, @fk_contribuinte)", c, transaction);
+                            }
+                        }
+                        if (objeto.Fornecedores != null)
+                        {
+                            foreach (var item in objeto.Fornecedores)
+                            {
+                                c = new DynamicParameters();
+                                c.Add("fk_pessoa", id);
+                                c.Add("fk_contribuinte", item);
+                                retorno = await conexaoDB.ExecuteAsync("INSERT INTO tb_fornecedor (fk_pessoa, fk_contribuinte) VALUES (@fk_pessoa, @fk_contribuinte)", c, transaction);
+                            }
+                        }
+                    }
+                    transaction.Commit();
+                }
+                catch (Exception e)
+                {
+                    transaction.Rollback();
+                    GravarLogErro("PessoaRepositorio", "InserirAsync", e);
+                    retorno = 0;
+                }
             }
-            catch (Exception e)
-            {
-                GravarLogErro("UsuarioRepositorio", "InserirAsync", e);
-            }
-            return retorno;
         }
     }
 }
+
+            
+            
