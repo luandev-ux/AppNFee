@@ -21,25 +21,27 @@ namespace AppNFe.Persistencia.Mapeadores
             Map(c => c.Telefone).ToColumn("telefone");
             Map(c => c.Email).ToColumn("email");
             Map(c => c.TipoPessoa).ToColumn("tipo_pessoa");
-        }
-        public class FornecedorMap : DommelEntityMap<Fornecedor>
+        }        
+    }
+
+    public class FornecedorMap : DommelEntityMap<Fornecedor>
+    {
+        public FornecedorMap()
         {
-            public FornecedorMap()
-            {
-                ToTable("fornecedor");
-                Map(c => c.Codigo).ToColumn("pk_id").IsKey().IsIdentity();
-                Map(c => c.CodigoPessoa).ToColumn("fk_pessoa");
-            }
-            public class ClienteMap : DommelEntityMap<Cliente>
-            {
-                public ClienteMap()
-                {
-                    ToTable("cliente");
-                    Map(c => c.Codigo).ToColumn("pk_id").IsKey().IsIdentity();
-                    Map(c => c.CodigoPessoa).ToColumn("fk_pessoa");
-                    Map(c => c.Contribuinte).ToColumn("contribuinte");
-                }
-            }
+            ToTable("fornecedor");
+            Map(c => c.Codigo).ToColumn("pk_id").IsKey().IsIdentity();
+            Map(c => c.CodigoPessoa).ToColumn("fk_pessoa");
+        }
+    }
+
+    public class ClienteMap : DommelEntityMap<Cliente>
+    {
+        public ClienteMap()
+        {
+            ToTable("cliente");
+            Map(c => c.Codigo).ToColumn("pk_id").IsKey().IsIdentity();
+            Map(c => c.CodigoPessoa).ToColumn("fk_pessoa");
+            Map(c => c.Contribuinte).ToColumn("contribuinte");
         }
     }
 }

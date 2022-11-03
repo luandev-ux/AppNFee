@@ -19,6 +19,7 @@ using AppNFe.Dominio.Entidades.Pessoas;
 using AppNFe.Dominio.Entidades;
 using Microsoft.Extensions.Configuration;
 using System.Collections;
+using System.Configuration;
 
 namespace AppNFe.Persistencia.Repositorios
 {
@@ -86,72 +87,132 @@ namespace AppNFe.Persistencia.Repositorios
             return listaItens;
         }
 
-        public override async Task<Retorno> InserirAsync(Pessoa objeto, UsuariosRegistroAtividade registroAtividade = null)
-        {
-            var retorno = 0;
-
-            var c = new DynamicParameters();
-            //nome, nome_fantasia, cnpj_cpf, inscricao_estadual, endereco, bairro, cidade, uf, cep, telefone, email, tipo_pessoa
-            c.Add("pk_id", objeto.Nome);d
-            c.Add("nome", objeto.Nome);
-            c.Add("nome_fantasia", objeto.NomeFantasia);
-            c.Add("cnpj_cpf", objeto.CnpjCpf);
-            c.Add("inscricao_estadual", objeto.InscricaoEstadual);
-            c.Add("endereco", objeto.Endereco);
-            c.Add("bairro", objeto.Bairro);
-            c.Add("cidade", objeto.Cidade);
-            c.Add("uf", objeto.Uf);
-            c.Add("cep", objeto.Cep);
-            c.Add("telefone", objeto.Telefone);
-            c.Add("email", objeto.Email);
-            c.Add("tipo_pessoa", objeto.TipoPessoa);
-            c.Add("pk_id", objeto.Clientes);
-            c.Add("fk_pessoa", objeto.Clientes);
-            c.Add("fk_contribuinte", objeto.Clientes);
-            c.Add("pk_id", objeto.Fornecedores);
-            c.Add("fk_pessoa", objeto.Fornecedores);
-
-            using (var transaction = conexaoDB.BeginTransaction())
+        public override async Task<Retorno> InserirAsync(Pessoa pessoa, UsuariosRegistroAtividade registroAtividade)
+        {            
+            try
             {
-                try
+                using (var transacao = CriarTransacaoAsync())
                 {
-                    retorno = await conexaoDB.ExecuteAsync("INSERT INTO pessoa (nome, nome_fantasia, cnpj_cpf, inscricao_estadual, endereco, bairro, cidade, uf, cep, telefone, email, tipo_pessoa) VALUES (@nome, @nome_fantasia, @cnpj_cpf, @inscricao_estadual, @endereco, @bairro, @cidade, @uf, @cep, @telefone, @email, @tipo_pessoa)", c, transaction);
-                    if (retorno > 0)
+                    Retorno retorno = await base.InserirAsync(pessoa, registroAtividade);
+                    if (retorno.Status)
                     {
-                        var id = await conexaoDB.QueryFirstOrDefaultAsync<int>("SELECT MAX(pk_id) FROM pessoa", transaction: transaction);
-                        if (objeto.Clientes != null)
+                        foreach (var cliente in pessoa.Clientes)
                         {
-                            foreach (var item in objeto.Clientes)
-                            {
-                                c = new DynamicParameters();
-                                c.Add("fk_pessoa", id);
-                                c.Add("fk_contribuinte", item);
-                                retorno = await conexaoDB.ExecuteAsync("INSERT INTO tb_cliente (fk_pessoa, fk_contribuinte) VALUES (@fk_pessoa, @fk_contribuinte)", c, transaction);
-                            }
+                            cliente.CodigoPessoa = retorno.CodigoRegistro;
+                            long codigoCliente = (long)await conexaoDB.InsertAsync(cliente);
+                            if (codigoCliente <=0)
+                                return new Retorno(false, "Não foi possível salvar as informações de cliente");
                         }
-                        if (objeto.Fornecedores != null)
+
+                        foreach (var fornecedor in pessoa.Fornecedores)
                         {
-                            foreach (var item in objeto.Fornecedores)
-                            {
-                                c = new DynamicParameters();
-                                c.Add("fk_pessoa", id);
-                                c.Add("fk_contribuinte", item);
-                                retorno = await conexaoDB.ExecuteAsync("INSERT INTO tb_fornecedor (fk_pessoa, fk_contribuinte) VALUES (@fk_pessoa, @fk_contribuinte)", c, transaction);
-                            }
+                            fornecedor.CodigoPessoa = retorno.CodigoRegistro;
+                            long codigoFornecedor = (long)await conexaoDB.InsertAsync(fornecedor);
+                            if (codigoFornecedor <= 0)
+                                return new Retorno(false, "Não foi possível salvar as informações de fornecedor");
                         }
-                    }
-                    transaction.Commit();
-                }
-                catch (Exception e)
-                {
-                    transaction.Rollback();
-                    GravarLogErro("PessoaRepositorio", "InserirAsync", e);
-                    retorno = 0;
+                        
+                        transacao.Complete(); //commit 
+                        retorno.Mensagem = "Pessoa cadastrada com sucesso!";
+                        return retorno;
+                    }                    
                 }
             }
+            catch (Exception e)
+            {
+                GravarLogErro("EmpresaRepositorio", "InserirAsync", e);
+            }
+            return new Retorno(false, "Não foi possível salvar as informações de pessoa");
+        }
+        
+        public override async Task<Retorno> AtualizarAsync(Pessoa pessoa, UsuariosRegistroAtividade registroAtividade)
+        {
+            try
+            {
+                using (var transacao = CriarTransacaoAsync())
+                {
+                    Retorno retorno = await base.AtualizarAsync(pessoa, registroAtividade);
+                    if (retorno.Status)
+                    {
+                        foreach (var cliente in pessoa.Clientes)
+                        {
+                            if (cliente.Codigo > 0)
+                            {
+                                cliente.CodigoPessoa = retorno.CodigoRegistro;
+                                bool retornoAtualizacaoCliente = (bool)await conexaoDB.UpdateAsync(cliente);
+                                if (!retornoAtualizacaoCliente)
+                                    return new Retorno(false, "Não foi possível atualizar as informações de cliente");
+                            }
+                            else
+                            {
+                                cliente.CodigoPessoa = retorno.CodigoRegistro;
+                                long codigoCliente = (long)await conexaoDB.InsertAsync(cliente);
+                                if (codigoCliente <= 0)
+                                    return new Retorno(false, "Não foi possível salvar as informações de cliente");
+                            }
+                            
+                        }
+
+                        foreach (var fornecedor in pessoa.Fornecedores)
+                        {
+                            if (fornecedor.Codigo > 0)
+                            {                                
+                                bool retornoAtualizacaoFornecedor = (bool)await conexaoDB.UpdateAsync(fornecedor);
+                                if (!retornoAtualizacaoFornecedor)
+                                    return new Retorno(false, "Não foi possível atualizar as informações de fornecedor");
+                            }
+                            else
+                            {
+                                fornecedor.CodigoPessoa = retorno.CodigoRegistro;
+                                long codigoFornecedor = (long)await conexaoDB.InsertAsync(fornecedor);
+                                if (codigoFornecedor <= 0)
+                                    return new Retorno(false, "Não foi possível salvar as informações de fornecedor");
+                            }
+
+                        }
+
+                        transacao.Complete(); //commit 
+                        retorno.Mensagem = "Pessoa atualizada com sucesso!";
+                        return retorno;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                GravarLogErro("EmpresaRepositorio", "AtualizarAsync", e);
+            }
+            return new Retorno(false, "Não foi possível salvar as informações de pessoa");
+        }
+
+
+        public override async Task<Retorno> ExcluirAsync(long codigo, UsuariosRegistroAtividade registroAtividade)
+        {
+            try
+            {
+                using (var transacao = CriarTransacaoAsync())
+                {                    
+                    Retorno retornoExclusaoCliente = await ExcluirEmMassaAsync<Cliente>("fk_pessoa = " + codigo);
+                    if (!retornoExclusaoCliente.Status) return new Retorno("Não foi possível remover os dados de cliente");
+
+                    Retorno retornoExclusaoFornecedor = await ExcluirEmMassaAsync<Fornecedor>("fk_pessoa = " + codigo);
+                    if (!retornoExclusaoFornecedor.Status) return new Retorno("Não foi possível remover os dados de fornecedor");
+
+                    Retorno retorno = await base.ExcluirAsync(codigo, registroAtividade);
+                    if (retorno.Status)
+                    {
+                        transacao.Complete(); //commit 
+                        retorno.Mensagem = "Pessoa excluída com sucesso!";
+                        return retorno;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                GravarLogErro("EmpresaRepositorio", "ExcluirAsync", e);
+            }
+            return new Retorno(false, "Não foi possível excluir as informações de pessoa");
         }
     }
 }
-
             
             

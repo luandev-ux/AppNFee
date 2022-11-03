@@ -71,8 +71,6 @@ namespace API.Controllers
         /// <param name="pessoa">Objeto - Pessoa</param>
         /// <response code="200">Usuário cadastrado com sucesso.</response>
         /// <response code="203">Informações inválidas.</response>
-        /// <response code="403">Usuário não possui permissão para executar essa operação.</response>
-        /// <response code="500">Desculpe-nos ocorreu um erro ao cadastrar o usuário.</response>
         [HttpPost]
         [Route("alterar")]
         public async Task<IActionResult> AtualizarAsync(Pessoa pessoa)
@@ -88,8 +86,6 @@ namespace API.Controllers
         /// <param name="pessoa">Objeto - Pessoa</param>
         /// <response code="200">Usuário cadastrado com sucesso.</response>
         /// <response code="203">Informações inválidas.</response>
-        /// <response code="403">Usuário não possui permissão para executar essa operação.</response>
-        /// <response code="500">Desculpe-nos ocorreu um erro ao cadastrar o usuário.</response>
         [HttpDelete]
         [Route("excluir")]
         [ProducesResponseType(typeof(Pessoa), 200)]
