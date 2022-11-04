@@ -1,7 +1,7 @@
 ﻿using AppNFe.Core.MensagemPadronizada;
 using System.ComponentModel.DataAnnotations;
 
-namespace AppNFe.Dominio.Entidades
+namespace AppNFe.Dominio.Entidades.Movimentos
 {
     [Display(Name = "Produto")]
     public class Produto
@@ -51,7 +51,7 @@ namespace AppNFe.Dominio.Entidades
         [Display(Name = "E-mail")]
         public string Unidade { get; set; }
         #endregion
-        #endregion
 
+        #endregion
     }
 }
