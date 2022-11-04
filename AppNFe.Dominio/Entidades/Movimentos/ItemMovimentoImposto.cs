@@ -67,7 +67,14 @@ namespace AppNFe.Dominio.Entidades.Movimentos
         [Required(ErrorMessageResourceType = typeof(Mensagem), ErrorMessageResourceName = "MSG_E001")]
         public double ValorCofins { get; set; }
         #endregion
-        
+
         #endregion
+        public List<ItemMovimentoImposto> ItemMovimentoImpostos { get; set; }
+
+        public ItemMovimentoImposto()
+        {
+            ItemMovimentoImpostos = new List<ItemMovimentoImposto>();
+
+        }
     }
 }

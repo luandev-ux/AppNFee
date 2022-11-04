@@ -22,7 +22,9 @@ namespace AppNFe.Persistencia.Repositorios
     public class UsuarioRepositorio : RepositorioBase<Usuario>, IUsuarioRepositorio
     {
         public UsuarioRepositorio(IGerenteConexao gerenteConexao, ILogger logger) : base(gerenteConexao, logger) { }
-
+        
+        #region Propriedades
+        
         #region Obter Usuário
         public async Task<ListaPaginada<Usuario>> ObterUsuarios(ParametrosConsulta parametrosConsulta, List<FiltroGenerico> filtros)
         {
@@ -96,6 +98,8 @@ namespace AppNFe.Persistencia.Repositorios
             }
             return retorno;
         }
+        #endregion
+        
         #endregion
     }
 }

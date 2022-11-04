@@ -90,12 +90,13 @@ namespace AppNFe.Dominio.Entidades.Pessoas
 
         public List<Fornecedor> Fornecedores { get; set; }
 
+        public List<Movimento> Movimentos { get; set; }
+
         public Pessoa()
         {
-
             Clientes = new List<Cliente>();
             Fornecedores = new List<Fornecedor>();
-
+            Movimentos = new List<Movimento>();
         }
         #endregion
     }

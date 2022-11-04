@@ -112,7 +112,15 @@ namespace AppNFe.Persistencia.Repositorios
                                 return new Retorno(false, "Não foi possível salvar as informações de fornecedor");
                         }
                         
-                        transacao.Complete(); //commit 
+                        foreach (var movimento in pessoa.Movimentos)
+                        {
+                            movimento.CodigoPessoa = retorno.CodigoRegistro;
+                            long codigoMovimento = (long)await conexaoDB.InsertAsync(movimento);
+                            if (codigoMovimento <= 0)
+                                return new Retorno(false, "Não foi possível salvar as informações de movimento");
+                        }
+                        
+                        transacao.Complete(); 
                         retorno.Mensagem = "Pessoa cadastrada com sucesso!";
                         return retorno;
                     }                    
@@ -171,7 +179,7 @@ namespace AppNFe.Persistencia.Repositorios
 
                         }
 
-                        transacao.Complete(); //commit 
+                        transacao.Complete(); 
                         retorno.Mensagem = "Pessoa atualizada com sucesso!";
                         return retorno;
                     }

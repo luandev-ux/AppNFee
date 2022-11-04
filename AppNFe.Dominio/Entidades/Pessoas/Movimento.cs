@@ -1,16 +1,23 @@
 ﻿using AppNFe.Core.MensagemPadronizada;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace AppNFe.Dominio.Entidades.Movimento
+namespace AppNFe.Dominio.Entidades.Pessoas
 {
     public class Movimento
     {
         #region Propriedades
-        
+
         #region Codigo
         [Required(ErrorMessageResourceType = typeof(Mensagem), ErrorMessageResourceName = "MSG_E001")]
         public long Codigo { get; set; }
+        #endregion
+        #region Codigo Pessoa
+        [Required(ErrorMessageResourceType = typeof(Mensagem), ErrorMessageResourceName = "MSG_E001")]
+        [ForeignKey("pessoa")]
+        public long CodigoPessoa { get; set; }
         #endregion
         #region Data
         [Required(ErrorMessageResourceType = typeof(Mensagem), ErrorMessageResourceName = "MSG_E001")]
@@ -59,7 +66,7 @@ namespace AppNFe.Dominio.Entidades.Movimento
         [MaxLength(3, ErrorMessageResourceType = typeof(Mensagem), ErrorMessageResourceName = "MSG_E003")]
         public string TipoMovimentacao { get; set; } // 0 - Entrada, 1 - Saida
         #endregion
-        
+
         #endregion
     }
 }
