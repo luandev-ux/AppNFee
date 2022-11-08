@@ -28,6 +28,7 @@ namespace AppNFe.Persistencia.Repositorios
         public readonly IDbConnection conexaoDB;
         public readonly string contratante;
 
+        #region Cria conexão com o banco de dados, cria mapeamento e log de erro
         public RepositorioBase(IGerenteConexao gerenteConexao, ILogger logger)
         {
             try
@@ -42,7 +43,9 @@ namespace AppNFe.Persistencia.Repositorios
                 GravarLogErro("RepositorioBase", "Construtor", e);
             }
         }
-
+        #endregion
+        
+        #region Criar Transação e Executar Comando SQL com Dapper
         public TransactionScope CriarTransacaoAsync()
         {
             return new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
@@ -63,7 +66,9 @@ namespace AppNFe.Persistencia.Repositorios
 
             return nomeTabela;
         }
+        #endregion
 
+        #region Obter Registro por Código
         public string ObterNomeColunaDB<Type>(string propriedade)
         {
             string nomeColuna = "";
@@ -79,7 +84,9 @@ namespace AppNFe.Persistencia.Repositorios
 
             return nomeColuna;
         }
-
+        #endregion
+        
+        #region Operador AND / OR para consulta SQL
         public string ObtenhaOperadorSQL(byte operador)
         {
             string operadorSQL = "";
@@ -94,7 +101,9 @@ namespace AppNFe.Persistencia.Repositorios
             }
             return operadorSQL;
         }
-
+        #endregion
+        
+        #region Filtro utilizado em Consultas, Relatórios e Fluxo de trabalho
         public string ObtenhaCondicaoFiltroGenericoComValorSQL(FiltroGenerico filtro)
         {
             string condicaoSQL = "";
@@ -224,7 +233,9 @@ namespace AppNFe.Persistencia.Repositorios
 
             return condicaoSQL;
         }
-
+        #endregion
+        
+        #region Filtro utilizado em Consultas, Relatórios e Fluxo de trabalho
         public string MontarFiltrosGenericosSQL(List<FiltroGenerico> filtrosComValores, List<PropriedadeConsulta> propriedadesConsulta, List<string> ordenacao, int qtdeRegistrosTotal = 500, bool preCondicaoAdicionada = false, string agruparColunas = "")
         {
             StringBuilder sqlQuery = new StringBuilder();
@@ -271,7 +282,7 @@ namespace AppNFe.Persistencia.Repositorios
                         ultimoOperador = filtro.Operador;
                     }
                 }
-
+               
                 if (!string.IsNullOrEmpty(agruparColunas))
                     sqlQuery.Append(" GROUP BY " + agruparColunas + " ");
 
@@ -285,6 +296,9 @@ namespace AppNFe.Persistencia.Repositorios
             }
             return sqlQuery.ToString();
         }
+        #endregion
+        
+        #region Monta consulta rápida padronizada com objetivo de deixa-las seguras e performatica. 
         /// <summary>
         /// Monta consulta rápida padronizada com objetivo de deixa-las seguras e performatica.
         /// </summary>
@@ -375,7 +389,9 @@ namespace AppNFe.Persistencia.Repositorios
 
             return sql.ToString();
         }
+        #endregion
 
+        #region Ordernar Consulta
         public string ObtenhaOrdenacaoSQL(List<string> ordenacao, List<PropriedadeConsulta> propriedadesConsulta)
         {
             string ordenacaoSQL = "";
@@ -431,7 +447,9 @@ namespace AppNFe.Persistencia.Repositorios
             }
             return ordenacaoSQL;
         }
+        #endregion
 
+        #region Inserir Registro no Banco de Dados
         public virtual Retorno Inserir(TEntidade objeto)
         {
             try
@@ -445,7 +463,9 @@ namespace AppNFe.Persistencia.Repositorios
                 return new Retorno();
             }
         }
+        #endregion
 
+        #region Atualizar Registro no Banco de Dados
         public virtual Retorno Atualizar(TEntidade objeto)
         {
             try
@@ -459,7 +479,9 @@ namespace AppNFe.Persistencia.Repositorios
                 return new Retorno();
             }
         }
+        #endregion
 
+        #region Excluir Registro no Banco de Dados
         public virtual Retorno Excluir(long codigo)
         {
             try
@@ -473,7 +495,9 @@ namespace AppNFe.Persistencia.Repositorios
                 return new Retorno();
             }
         }
+        #endregion
 
+        #region Obter Registro no Banco de Dados
         public virtual TEntidade ObterPeloCodigo(long codigo)
         {
             TEntidade tEntity = null;
@@ -487,7 +511,9 @@ namespace AppNFe.Persistencia.Repositorios
             }
             return tEntity;
         }
+        #endregion
 
+        #region Obter Lista de Registros no Banco de Dados
         public virtual IEnumerable<TEntidade> ObterTodosRegistros()
         {
             IEnumerable<TEntidade> tEntity = null;
@@ -502,7 +528,9 @@ namespace AppNFe.Persistencia.Repositorios
 
             return tEntity;
         }
+        #endregion
 
+        #region  Insere registro  no banco de dados e registra a atividade do usuário
         /// <summary>
         /// Insere registro  no banco de dados e registra a atividade do usuário
         /// </summary>
@@ -535,7 +563,9 @@ namespace AppNFe.Persistencia.Repositorios
 
             return new Retorno("Não foi possível efetuar a inclusão do registro!");
         }
+        #endregion
 
+        #region Atualiza registro  no banco de dados e registra a atividade do usuário
         /// <summary>
         /// Atualiza registro no banco de dados e registra a atividade do usuário
         /// </summary>
@@ -568,7 +598,9 @@ namespace AppNFe.Persistencia.Repositorios
 
             return new Retorno("Não foi possível atualizar o registro!");
         }
+        #endregion
 
+        #region Exclui registro  no banco de dados e registra a atividade do usuário
         /// <summary>
         /// Exclui regitro no banco de dados e registra a atividade do usuário
         /// </summary>
@@ -602,7 +634,9 @@ namespace AppNFe.Persistencia.Repositorios
 
             return new Retorno("Não foi possível excluir o registro!");
         }
+        #endregion
 
+        #region Grava registro de atividade do usuário Async
         public async Task<Retorno> InserirRegistroAtividadeAsync(UsuariosRegistroAtividade registroAtividade)
         {
             var retornoFalha = new Retorno("Não foi possível salvar as informações do registro de atividade do usuário!");
@@ -627,7 +661,9 @@ namespace AppNFe.Persistencia.Repositorios
                 return retornoFalha;
             }
         }
+        #endregion
 
+        #region Inserir registro de atividade Async
         public async Task<Retorno> InserirRegistroAtividadeAsync(UsuariosRegistroAtividade registroAtividade, string detalhe)
         {
             if (registroAtividade != null)
@@ -646,7 +682,9 @@ namespace AppNFe.Persistencia.Repositorios
                 return new Retorno(true);
             }
         }
+        #endregion
 
+        #region Atualizar registro Async
         public virtual async Task<Retorno> AtualizarAsync(TEntidade objeto)
         {
             try
@@ -661,7 +699,9 @@ namespace AppNFe.Persistencia.Repositorios
                 return new Retorno();
             }
         }
-
+        #endregion
+        
+        #region Exclui registro no banco de dados Async
         public virtual async Task<Retorno> ExcluirAsync(long codigo)
         {
             try
@@ -675,7 +715,9 @@ namespace AppNFe.Persistencia.Repositorios
                 return new Retorno();
             }
         }
+        #endregion
 
+        #region Exclusão em Massa Async
         /// <summary>
         /// Efetua exclusão em massa no banco de dados com o preenchimento obrigatório das chaves primárias
         /// Funciona somente em objetos cujo a chave primária foi mapeada na propriedade com Nome: Codigo
@@ -710,7 +752,9 @@ namespace AppNFe.Persistencia.Repositorios
             }
             return new Retorno("Não foi possível excluir os registros.");
         }
+        #endregion
 
+        #region Efetua exclusão em massa no banco de dados por uma condição customizada
         /// <summary>
         /// Efetua exclusão em massa no banco de dados pela por uma condição customizada        
         /// </summary>
@@ -740,12 +784,16 @@ namespace AppNFe.Persistencia.Repositorios
             }
             return new Retorno("Não foi possível excluir os registros.");
         }
+        #endregion
 
+        #region Validar Entidades Referenciadas
         public virtual Task<Retorno> ValidarEntidadesReferenciadas(TEntidade objeto)
         {
             return Task.FromResult(new Retorno(true));
         }
+        #endregion
 
+        #region Obter pelo código Async
         public virtual async Task<TEntidade> ObterPeloCodigoAsync(long codigo)
         {
             TEntidade tEntity = null;
@@ -759,12 +807,16 @@ namespace AppNFe.Persistencia.Repositorios
             }
             return tEntity;
         }
+        #endregion
 
+        #region Obter registro pelo código Async
         public virtual async Task<TEntidade> ObterPeloCodigoLazyAsync(long codigo)
         {
             return await ObterPeloCodigoAsync(codigo);
         }
+        #endregion
 
+        #region Obter todos os registros Async
         public virtual async Task<IEnumerable<TEntidade>> ObterTodosRegistrosAsync()
         {
             IEnumerable<TEntidade> tEntity = null;
@@ -778,12 +830,14 @@ namespace AppNFe.Persistencia.Repositorios
             }
             return tEntity;
         }
+        #endregion
 
+        #region Ajustar formato de data para o banco de dados
         public string DataToDB(DateTime data)
         {
             return data.ToString("yyyy-MM-dd");
         }
-
+        
         public string DataHoraMinutoToDB(DateTime data)
         {
             return data.ToString("yyyy-MM-dd HH:mm");
@@ -793,7 +847,9 @@ namespace AppNFe.Persistencia.Repositorios
         {
             return data.ToString("yyyy-MM-dd HH:mm:ss");
         }
+        #endregion
 
+        #region Impedir que o objeto seja salvo com o código zerado
         private string TratarValorMonetarioDB(string valor)
         {
             string valorTratado = "0";
@@ -809,7 +865,7 @@ namespace AppNFe.Persistencia.Repositorios
 
             return valorTratado;
         }
-
+        
         public string DecimalToDB(decimal valor)
         {
             try
@@ -823,7 +879,7 @@ namespace AppNFe.Persistencia.Repositorios
 
             return "0";
         }
-
+         
         public string DoubleToDB(double valor)
         {
             try
@@ -837,7 +893,9 @@ namespace AppNFe.Persistencia.Repositorios
 
             return "0";
         }
+        #endregion
 
+        #region Gravar log de erro no banco de dados
         public void GravarLogErro(string repositorio, string metodo, Exception e)
         {
             logger.Error("Erro: " + repositorio + " > Método: " + metodo + " Detalhes: " + e.Message);
@@ -847,7 +905,9 @@ namespace AppNFe.Persistencia.Repositorios
         {
             logger.Error("Erro: " + repositorio + " > Método: " + metodo + " Detalhes: " + detalhes);
         }
+        #endregion
 
+        #region Verificar se o objeto existe no banco de dados
         public bool VerificaListaCodigos(List<long> listaCodigos)
         {
             if (listaCodigos != null)
@@ -879,7 +939,8 @@ namespace AppNFe.Persistencia.Repositorios
             {
                 GravarLogErro("RepositorioBase", "Dispose", e);
             }
-
+            #endregion
+            
         }
     }
 }

@@ -1,3 +1,4 @@
+using AppNFe.Persistencia.Mapeadores;
 using Dapper.FluentMap;
 using Dapper.FluentMap.Dommel;
 

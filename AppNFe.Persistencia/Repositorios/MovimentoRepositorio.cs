@@ -1,4 +1,5 @@
 ﻿using Dapper;
+
 using AppNFe.Core.Persistencia;
 using AppNFe.Core.Persistencia.Consulta;
 using AppNFe.Dominio.Consulta;
@@ -11,15 +12,15 @@ using System.Threading.Tasks;
 using Dommel;
 using AppNFe.Core.DominioProblema;
 using System.Text;
+using AppNFe.Dominio.Entidades;
 using AppNFe.Persistencia.Interfaces.Repositorios;
 using AppNFe.Dominio.Entidades.Pessoas;
-using AppNFe.Dominio.Entidades;
 
 namespace AppNFe.Persistencia.Repositorios
 {
-    public class PessoaRepositorio : RepositorioBase<Pessoa>, IPessoaRepositorio
+    public class MovimentoRepositorio : RepositorioBase<Movimento>, IMovimentoRepositorio
     {
-        public PessoaRepositorio(IGerenteConexao gerenteConexao, ILogger logger) : base(gerenteConexao, logger) { }
+        public MovimentoRepositorio(IGerenteConexao gerenteConexao, ILogger logger) : base(gerenteConexao, logger) { }
 
         public async Task<ListaPaginada<Usuario>> ObterUsuarios(ParametrosConsulta parametrosConsulta, List<FiltroGenerico> filtros)
         {
@@ -81,92 +82,67 @@ namespace AppNFe.Persistencia.Repositorios
             return listaItens;
         }
 
-        public override async Task<Retorno> InserirAsync(Pessoa pessoa, UsuariosRegistroAtividade registroAtividade)
-        {            
+        public override async Task<Retorno> InserirAsync(Movimento movimento, UsuariosRegistroAtividade registroAtividade)
+        {
             try
             {
                 using (var transacao = CriarTransacaoAsync())
                 {
-                    Retorno retorno = await base.InserirAsync(pessoa, registroAtividade);
+                    Retorno retorno = await base.InserirAsync(movimento, registroAtividade);
                     if (retorno.Status)
                     {
-                        foreach (var cliente in pessoa.Clientes)
+                        foreach (var pessoa in movimento.Pessoas)
                         {
-                            cliente.CodigoPessoa = retorno.CodigoRegistro;
-                            long codigoCliente = (long)await conexaoDB.InsertAsync(cliente);
-                            if (codigoCliente <=0)
+                            pessoa.Codigo = retorno.CodigoRegistro;
+                            long codigoCliente = (long)await conexaoDB.InsertAsync(pessoa);
+                            if (codigoCliente <= 0)
                                 return new Retorno(false, "Não foi possível salvar as informações de cliente");
                         }
 
-                        foreach (var fornecedor in pessoa.Fornecedores)
-                        {
-                            fornecedor.CodigoPessoa = retorno.CodigoRegistro;
-                            long codigoFornecedor = (long)await conexaoDB.InsertAsync(fornecedor);
-                            if (codigoFornecedor <= 0)
-                                return new Retorno(false, "Não foi possível salvar as informações de fornecedor");
-                        }
 
-                        transacao.Complete(); 
-                        retorno.Mensagem = "Pessoa cadastrada com sucesso!";
+                        transacao.Complete();
+                        retorno.Mensagem = "Movimento cadastrada com sucesso!";
                         return retorno;
-                    }                    
+                    }
                 }
             }
             catch (Exception e)
             {
                 GravarLogErro("EmpresaRepositorio", "InserirAsync", e);
             }
-            return new Retorno(false, "Não foi possível salvar as informações de pessoa");
+            return new Retorno(false, "Não foi possível salvar as informações de movimento");
         }
-        
-        public override async Task<Retorno> AtualizarAsync(Pessoa pessoa, UsuariosRegistroAtividade registroAtividade)
+
+        public override async Task<Retorno> AtualizarAsync(Movimento movimento, UsuariosRegistroAtividade registroAtividade)
         {
             try
             {
                 using (var transacao = CriarTransacaoAsync())
                 {
-                    Retorno retorno = await base.AtualizarAsync(pessoa, registroAtividade);
+                    Retorno retorno = await base.AtualizarAsync(movimento, registroAtividade);
                     if (retorno.Status)
                     {
-                        foreach (var cliente in pessoa.Clientes)
+                        foreach (var pessoa in movimento.Pessoas)
                         {
-                            if (cliente.Codigo > 0)
+                            if (pessoa.Codigo > 0)
                             {
-                                cliente.CodigoPessoa = retorno.CodigoRegistro;
-                                bool retornoAtualizacaoCliente = (bool)await conexaoDB.UpdateAsync(cliente);
+                                movimento.Codigo = retorno.CodigoRegistro;
+                                bool retornoAtualizacaoCliente = await conexaoDB.UpdateAsync(pessoa);
                                 if (!retornoAtualizacaoCliente)
                                     return new Retorno(false, "Não foi possível atualizar as informações de cliente");
                             }
                             else
                             {
-                                cliente.CodigoPessoa = retorno.CodigoRegistro;
-                                long codigoCliente = (long)await conexaoDB.InsertAsync(cliente);
-                                if (codigoCliente <= 0)
+                                pessoa.Codigo = retorno.CodigoRegistro;
+                                long codigoPessoa = (long)await conexaoDB.InsertAsync(pessoa);
+                                if (codigoPessoa <= 0)
                                     return new Retorno(false, "Não foi possível salvar as informações de cliente");
                             }
-                            
-                        }
-
-                        foreach (var fornecedor in pessoa.Fornecedores)
-                        {
-                            if (fornecedor.Codigo > 0)
-                            {                                
-                                bool retornoAtualizacaoFornecedor = (bool)await conexaoDB.UpdateAsync(fornecedor);
-                                if (!retornoAtualizacaoFornecedor)
-                                    return new Retorno(false, "Não foi possível atualizar as informações de fornecedor");
-                            }
-                            else
-                            {
-                                fornecedor.CodigoPessoa = retorno.CodigoRegistro;
-                                long codigoFornecedor = (long)await conexaoDB.InsertAsync(fornecedor);
-                                if (codigoFornecedor <= 0)
-                                    return new Retorno(false, "Não foi possível salvar as informações de fornecedor");
-                            }
 
                         }
 
-                        transacao.Complete(); 
-                        retorno.Mensagem = "Pessoa atualizada com sucesso!";
+                        transacao.Complete();
+                        retorno.Mensagem = "Movimento atualizada com sucesso!";
                         return retorno;
                     }
                 }
@@ -175,26 +151,27 @@ namespace AppNFe.Persistencia.Repositorios
             {
                 GravarLogErro("EmpresaRepositorio", "AtualizarAsync", e);
             }
-            return new Retorno(false, "Não foi possível salvar as informações de pessoa");
+            return new Retorno(false, "Não foi possível salvar as informações de movimento");
         }
+
 
         public override async Task<Retorno> ExcluirAsync(long codigo, UsuariosRegistroAtividade registroAtividade)
         {
             try
             {
                 using (var transacao = CriarTransacaoAsync())
-                {                    
-                    Retorno retornoExclusaoCliente = await ExcluirEmMassaAsync<Cliente>("fk_pessoa = " + codigo);
+                {
+                    Retorno retornoExclusaoCliente = await ExcluirEmMassaAsync<Cliente>("fk_movimento = " + codigo);
                     if (!retornoExclusaoCliente.Status) return new Retorno("Não foi possível remover os dados de cliente");
 
-                    Retorno retornoExclusaoFornecedor = await ExcluirEmMassaAsync<Fornecedor>("fk_pessoa = " + codigo);
+                    Retorno retornoExclusaoFornecedor = await ExcluirEmMassaAsync<Fornecedor>("fk_movimento = " + codigo);
                     if (!retornoExclusaoFornecedor.Status) return new Retorno("Não foi possível remover os dados de fornecedor");
 
                     Retorno retorno = await base.ExcluirAsync(codigo, registroAtividade);
                     if (retorno.Status)
                     {
                         transacao.Complete(); //commit 
-                        retorno.Mensagem = "Pessoa excluída com sucesso!";
+                        retorno.Mensagem = "Movimento excluída com sucesso!";
                         return retorno;
                     }
                 }
@@ -203,9 +180,8 @@ namespace AppNFe.Persistencia.Repositorios
             {
                 GravarLogErro("EmpresaRepositorio", "ExcluirAsync", e);
             }
-            return new Retorno(false, "Não foi possível excluir as informações de pessoa");
+            return new Retorno(false, "Não foi possível excluir as informações de movimento");
         }
     }
 }
-            
-            
+

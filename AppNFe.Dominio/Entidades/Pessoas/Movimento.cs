@@ -40,12 +40,10 @@ namespace AppNFe.Dominio.Entidades.Pessoas
         #endregion
         #region Valor Total
         [Required(ErrorMessageResourceType = typeof(Mensagem), ErrorMessageResourceName = "MSG_E001")]
-        [MaxLength(5, ErrorMessageResourceType = typeof(Mensagem), ErrorMessageResourceName = "MSG_E003")]
         public double ValorTotal { get; set; }
         #endregion
         #region Valor Desconto
         [Required(ErrorMessageResourceType = typeof(Mensagem), ErrorMessageResourceName = "MSG_E001")]
-        [MaxLength(5, ErrorMessageResourceType = typeof(Mensagem), ErrorMessageResourceName = "MSG_E003")]
         public double Desconto { get; set; }
         #endregion
         #region Outras Despesas
@@ -68,5 +66,12 @@ namespace AppNFe.Dominio.Entidades.Pessoas
         #endregion
 
         #endregion
+        public List<Pessoa> Pessoas { get; set; }
+
+        public Movimento()
+        {
+            Pessoas = new List<Pessoa>();
+
+        }
     }
 }

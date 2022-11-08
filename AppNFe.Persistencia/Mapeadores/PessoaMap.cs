@@ -43,23 +43,4 @@ namespace AppNFe.Persistencia.Mapeadores
             Map(c => c.Contribuinte).ToColumn("contribuinte");
         }
     }
-    public class MovimentoMap : DommelEntityMap<Movimento>
-    {
-        public MovimentoMap()
-        {
-            ToTable("movimento");
-            Map(c => c.Codigo).ToColumn("pk_id").IsKey().IsIdentity();
-            Map(c => c.CodigoPessoa).ToColumn("fk_pessoa");
-            Map(c => c.Data).ToColumn("data");
-            Map(c => c.Numero).ToColumn("numero");
-            Map(c => c.Serie).ToColumn("serie");
-            Map(c => c.Modelo).ToColumn("modelo");
-            Map(c => c.ValorTotal).ToColumn("valor_total");
-            Map(c => c.Desconto).ToColumn("desconto");
-            Map(c => c.OutrasDespesas).ToColumn("outras_despesas");
-            Map(c => c.Frete).ToColumn("frete");
-            Map(c => c.ChaveDeAcesso).ToColumn("chave_de_acesso");
-            Map(c => c.TipoMovimentacao).ToColumn("tipo_movimentacao");
-        }
-    }
 }
