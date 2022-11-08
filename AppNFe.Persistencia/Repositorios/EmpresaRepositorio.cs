@@ -15,6 +15,7 @@ using AppNFe.Core.DominioProblema;
 using System.Text;
 using AppNFe.Persistencia.Interfaces.Repositorios;
 using AppNFe.Dominio.Entidades;
+using AppNFe.Dominio.Entidades.Pessoas;
 
 namespace AppNFe.Persistencia.Repositorios
 {
@@ -22,6 +23,9 @@ namespace AppNFe.Persistencia.Repositorios
     {
         public EmpresaRepositorio(IGerenteConexao gerenteConexao, ILogger logger) : base(gerenteConexao, logger) { }
 
+        #region Propriedades 
+        
+        #region Estrutura de Consulta Rápida
         public async Task<ListaPaginada<Empresa>> ObterEmpresas(ParametrosConsulta parametrosConsulta, List<FiltroGenerico> filtros)
         {
             IEnumerable<Empresa> listaEmpresas = new List<Empresa>();
@@ -56,7 +60,8 @@ namespace AppNFe.Persistencia.Repositorios
                       parametrosConsulta.NumeroPagina,
                       parametrosConsulta.QtdeRegistrosPagina);
         }
-
+        #endregion
+        #region Consulta Rápida
         public async Task<IEnumerable<ItemConsultaRapida>> ConsultaRapida(ParametrosConsultaRapida parametrosConsultaRapida, bool apresentarCodigo)
         {
             IEnumerable<ItemConsultaRapida> listaItens = new List<ItemConsultaRapida>();
@@ -81,7 +86,8 @@ namespace AppNFe.Persistencia.Repositorios
             }
             return listaItens;
         }
-
+        #endregion
+        #region Inserir Cadastro de Empresa
         public override async Task<Retorno> InserirAsync(Empresa empresa, UsuariosRegistroAtividade registroAtividade)
         {
             var retorno = new Retorno();
@@ -95,5 +101,38 @@ namespace AppNFe.Persistencia.Repositorios
             }
             return retorno;
         }
+        #endregion
+        #region Atualizar cadastro de Empresa
+        public override async Task<Retorno> AtualizarAsync(Empresa empresa, UsuariosRegistroAtividade registroAtividade)
+        {
+            var retorno = new Retorno();
+            try
+            {
+                retorno = await base.AtualizarAsync(empresa);
+            }
+            catch (Exception e)
+            {
+                GravarLogErro("EmpresaRepositorio", "AtualizarAsync", e);
+            }
+            return retorno;
+        }
+        #endregion
+        #region Excluir Movimento
+        public override async Task<Retorno> ExcluirAsync(long codigo, UsuariosRegistroAtividade registroAtividade)
+        {
+            var retorno = new Retorno();
+            try
+            {
+                retorno = await base.ExcluirAsync(codigo);
+            }
+            catch (Exception e)
+            {
+                GravarLogErro("EmpresaRepositorio", "ExcluirAsync", e);
+            }
+            return retorno;
+        }
+        #endregion
+
+        #endregion
     }
 }

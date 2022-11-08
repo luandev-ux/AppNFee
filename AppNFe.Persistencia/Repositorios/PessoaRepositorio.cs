@@ -20,7 +20,8 @@ namespace AppNFe.Persistencia.Repositorios
     public class PessoaRepositorio : RepositorioBase<Pessoa>, IPessoaRepositorio
     {
         public PessoaRepositorio(IGerenteConexao gerenteConexao, ILogger logger) : base(gerenteConexao, logger) { }
-
+        
+        #region Estrutura de Consulta Rápida 
         public async Task<ListaPaginada<Usuario>> ObterUsuarios(ParametrosConsulta parametrosConsulta, List<FiltroGenerico> filtros)
         {
             IEnumerable<Usuario> listaUsuarios = new List<Usuario>();
@@ -55,7 +56,9 @@ namespace AppNFe.Persistencia.Repositorios
                       parametrosConsulta.NumeroPagina,
                       parametrosConsulta.QtdeRegistrosPagina);
         }
-
+        #endregion
+        
+        #region Consulta Rápida
         public async Task<IEnumerable<ItemConsultaRapida>> ConsultaRapida(ParametrosConsultaRapida parametrosConsultaRapida, bool apresentarCodigo)
         {
             IEnumerable<ItemConsultaRapida> listaItens = new List<ItemConsultaRapida>();
@@ -80,7 +83,9 @@ namespace AppNFe.Persistencia.Repositorios
             }
             return listaItens;
         }
-
+        #endregion
+        
+        #region Inserir Pessoa Física e Jurídica
         public override async Task<Retorno> InserirAsync(Pessoa pessoa, UsuariosRegistroAtividade registroAtividade)
         {            
             try
@@ -118,7 +123,9 @@ namespace AppNFe.Persistencia.Repositorios
             }
             return new Retorno(false, "Não foi possível salvar as informações de pessoa");
         }
-        
+        #endregion
+
+        #region Atualizar Pessoa Física e Jurídica
         public override async Task<Retorno> AtualizarAsync(Pessoa pessoa, UsuariosRegistroAtividade registroAtividade)
         {
             try
@@ -177,7 +184,9 @@ namespace AppNFe.Persistencia.Repositorios
             }
             return new Retorno(false, "Não foi possível salvar as informações de pessoa");
         }
+        #endregion
 
+        #region Excluir Pessoa Física e Jurídica
         public override async Task<Retorno> ExcluirAsync(long codigo, UsuariosRegistroAtividade registroAtividade)
         {
             try
@@ -205,6 +214,7 @@ namespace AppNFe.Persistencia.Repositorios
             }
             return new Retorno(false, "Não foi possível excluir as informações de pessoa");
         }
+        #endregion
     }
 }
             

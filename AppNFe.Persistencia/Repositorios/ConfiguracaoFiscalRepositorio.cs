@@ -58,6 +58,7 @@ namespace AppNFe.Persistencia.Repositorios
                       parametrosConsulta.QtdeRegistrosPagina);
         }
         #endregion
+
         #region Select ConfiguracaoFiscal
         public async Task<IEnumerable<ItemConsultaRapida>> ConsultaRapida(string termo, List<int> empresas)
         {
@@ -81,6 +82,7 @@ namespace AppNFe.Persistencia.Repositorios
             return listaConfiguracaoFiscals;
         }
         #endregion
+        
         #region Inserir ConfiguracaoFiscal
         public override async Task<Retorno> InserirAsync(ConfiguracaoFiscal objeto, UsuariosRegistroAtividade registroAtividade)
         {

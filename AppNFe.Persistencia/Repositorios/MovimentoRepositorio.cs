@@ -22,6 +22,9 @@ namespace AppNFe.Persistencia.Repositorios
     {
         public MovimentoRepositorio(IGerenteConexao gerenteConexao, ILogger logger) : base(gerenteConexao, logger) { }
 
+        #region Propriedades
+        
+        #region Estrutura de Consulta Rápida
         public async Task<ListaPaginada<Usuario>> ObterUsuarios(ParametrosConsulta parametrosConsulta, List<FiltroGenerico> filtros)
         {
             IEnumerable<Usuario> listaUsuarios = new List<Usuario>();
@@ -56,7 +59,8 @@ namespace AppNFe.Persistencia.Repositorios
                       parametrosConsulta.NumeroPagina,
                       parametrosConsulta.QtdeRegistrosPagina);
         }
-
+        #endregion
+        #region Consulta Rápida
         public async Task<IEnumerable<ItemConsultaRapida>> ConsultaRapida(ParametrosConsultaRapida parametrosConsultaRapida, bool apresentarCodigo)
         {
             IEnumerable<ItemConsultaRapida> listaItens = new List<ItemConsultaRapida>();
@@ -81,7 +85,8 @@ namespace AppNFe.Persistencia.Repositorios
             }
             return listaItens;
         }
-
+        #endregion
+        #region Inserir Movimento
         public override async Task<Retorno> InserirAsync(Movimento movimento, UsuariosRegistroAtividade registroAtividade)
         {
             try
@@ -112,7 +117,8 @@ namespace AppNFe.Persistencia.Repositorios
             }
             return new Retorno(false, "Não foi possível salvar as informações de movimento");
         }
-
+        #endregion
+        #region Atualizar Movimento
         public override async Task<Retorno> AtualizarAsync(Movimento movimento, UsuariosRegistroAtividade registroAtividade)
         {
             try
@@ -127,22 +133,22 @@ namespace AppNFe.Persistencia.Repositorios
                             if (pessoa.Codigo > 0)
                             {
                                 movimento.Codigo = retorno.CodigoRegistro;
-                                bool retornoAtualizacaoCliente = await conexaoDB.UpdateAsync(pessoa);
-                                if (!retornoAtualizacaoCliente)
-                                    return new Retorno(false, "Não foi possível atualizar as informações de cliente");
+                                bool retornoAtualizacaoPessoa = await conexaoDB.UpdateAsync(pessoa);
+                                if (!retornoAtualizacaoPessoa)
+                                    return new Retorno(false, "Não foi possível atualizar as informações de Movimentação");
                             }
                             else
                             {
                                 pessoa.Codigo = retorno.CodigoRegistro;
                                 long codigoPessoa = (long)await conexaoDB.InsertAsync(pessoa);
                                 if (codigoPessoa <= 0)
-                                    return new Retorno(false, "Não foi possível salvar as informações de cliente");
+                                    return new Retorno(false, "Não foi possível salvar as informações de Movimentação");
                             }
 
                         }
 
                         transacao.Complete();
-                        retorno.Mensagem = "Movimento atualizada com sucesso!";
+                        retorno.Mensagem = "Movimentação atualizada com sucesso!";
                         return retorno;
                     }
                 }
@@ -153,8 +159,8 @@ namespace AppNFe.Persistencia.Repositorios
             }
             return new Retorno(false, "Não foi possível salvar as informações de movimento");
         }
-
-
+        #endregion
+        #region Excluir Movimento
         public override async Task<Retorno> ExcluirAsync(long codigo, UsuariosRegistroAtividade registroAtividade)
         {
             try
@@ -182,6 +188,9 @@ namespace AppNFe.Persistencia.Repositorios
             }
             return new Retorno(false, "Não foi possível excluir as informações de movimento");
         }
+        #endregion
+
+        #endregion
     }
 }
 

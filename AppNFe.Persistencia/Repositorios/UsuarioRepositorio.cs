@@ -61,6 +61,7 @@ namespace AppNFe.Persistencia.Repositorios
                       parametrosConsulta.QtdeRegistrosPagina);
         }
         #endregion
+
         #region Select Usuario
         public async Task<IEnumerable<ItemConsultaRapida>> ConsultaRapida(string termo, List<int> empresas)
         {
@@ -84,6 +85,7 @@ namespace AppNFe.Persistencia.Repositorios
             return listaUsuarios;
         }
         #endregion
+        
         #region Inserir Usuario
         public override async Task<Retorno> InserirAsync(Usuario objeto, UsuariosRegistroAtividade registroAtividade)
         {

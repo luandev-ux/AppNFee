@@ -15,9 +15,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Hubs\**" />
+    <Compile Remove="IOC\UnidadesTrabalho\**" />
     <Compile Remove="wwwroot\drive\**" />
+    <Content Remove="Hubs\**" />
+    <Content Remove="IOC\UnidadesTrabalho\**" />
     <Content Remove="wwwroot\drive\**" />
+    <EmbeddedResource Remove="Hubs\**" />
+    <EmbeddedResource Remove="IOC\UnidadesTrabalho\**" />
     <EmbeddedResource Remove="wwwroot\drive\**" />
+    <None Remove="Hubs\**" />
+    <None Remove="IOC\UnidadesTrabalho\**" />
     <None Remove="wwwroot\drive\**" />
   </ItemGroup>
 
@@ -43,8 +51,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Hubs\" />
-    <Folder Include="IOC\UnidadesTrabalho\" />
     <Folder Include="wwwroot\importacao-arquivos\temp\" />
     <Folder Include="wwwroot\relatorios\temp\" />
   </ItemGroup>
