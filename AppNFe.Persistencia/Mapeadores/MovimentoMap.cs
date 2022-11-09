@@ -1,4 +1,5 @@
-﻿using AppNFe.Dominio.Entidades.Pessoas;
+﻿using AppNFe.Dominio.Entidades.Movimentos;
+using AppNFe.Dominio.Entidades.Pessoas;
 using Dapper.FluentMap.Dommel.Mapping;
 
 

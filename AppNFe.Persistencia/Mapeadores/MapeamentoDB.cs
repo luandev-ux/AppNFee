@@ -18,6 +18,7 @@ namespace AppNFe.Persistencia.Mapeadores
                     c.AddMap(new ClienteMap());
                     c.AddMap(new FornecedorMap());
                     c.AddMap(new MovimentoMap());
+                    c.AddMap(new ProdutoMap());
                     c.AddMap(new ConfiguracaoFiscalMap());
                     c.ForDommel();
                 });

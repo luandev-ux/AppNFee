@@ -2,5 +2,6 @@
 
 namespace AppNFe.Persistencia.Interfaces.Repositorios
 {
-    public interface IEmpresaRepositorio : IRepositorioBase<Empresa>{ }
+    public interface IProdutoRepositorio : IRepositorioBase<Produto> { }
+    
 }

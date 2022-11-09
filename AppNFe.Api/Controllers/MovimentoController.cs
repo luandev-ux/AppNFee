@@ -2,7 +2,7 @@
 using AppNFe.Core.DominioProblema;
 using AppNFe.Core.Utilitarios;
 using AppNFe.Dominio.DTO.Integracoes.Jobs;
-using AppNFe.Dominio.Entidades.Pessoas;
+using AppNFe.Dominio.Entidades.Movimentos;
 using AppNFe.Persistencia.Interfaces.Repositorios;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;

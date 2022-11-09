@@ -2,6 +2,5 @@
 
 namespace AppNFe.Dominio.Consulta
 {
-    public class ParametrosConsulta : ParametrosConsultaBase
-    {}
+    public class ParametrosConsulta : ParametrosConsultaBase{ }
 }

@@ -44,8 +44,8 @@ namespace AppNFe.Persistencia.Repositorios
             }
         }
         #endregion
-        
-        #region Criar Transação e Executar Comando SQL com Dapper
+
+        #region CriarTransacaoAsync 
         public TransactionScope CriarTransacaoAsync()
         {
             return new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
@@ -68,7 +68,7 @@ namespace AppNFe.Persistencia.Repositorios
         }
         #endregion
 
-        #region Obter Registro por Código
+        #region ObterNomeColunaDB - Obter nome da coluna no banco de dados
         public string ObterNomeColunaDB<Type>(string propriedade)
         {
             string nomeColuna = "";
@@ -85,8 +85,8 @@ namespace AppNFe.Persistencia.Repositorios
             return nomeColuna;
         }
         #endregion
-        
-        #region Operador AND / OR para consulta SQL
+
+        #region ObtenhaOperadorSQL - Operador AND / OR para consulta SQL
         public string ObtenhaOperadorSQL(byte operador)
         {
             string operadorSQL = "";
@@ -102,8 +102,8 @@ namespace AppNFe.Persistencia.Repositorios
             return operadorSQL;
         }
         #endregion
-        
-        #region Filtro utilizado em Consultas, Relatórios e Fluxo de trabalho
+
+        #region ObtenhaCondicaoFiltroGenericoComValorSQL - Filtro utilizado em Consultas/Relatório
         public string ObtenhaCondicaoFiltroGenericoComValorSQL(FiltroGenerico filtro)
         {
             string condicaoSQL = "";
@@ -233,9 +233,7 @@ namespace AppNFe.Persistencia.Repositorios
 
             return condicaoSQL;
         }
-        #endregion
         
-        #region Filtro utilizado em Consultas, Relatórios e Fluxo de trabalho
         public string MontarFiltrosGenericosSQL(List<FiltroGenerico> filtrosComValores, List<PropriedadeConsulta> propriedadesConsulta, List<string> ordenacao, int qtdeRegistrosTotal = 500, bool preCondicaoAdicionada = false, string agruparColunas = "")
         {
             StringBuilder sqlQuery = new StringBuilder();
@@ -449,7 +447,7 @@ namespace AppNFe.Persistencia.Repositorios
         }
         #endregion
 
-        #region Inserir Registro no Banco de Dados
+        #region Inserir Registro Sync no Banco de Dados
         public virtual Retorno Inserir(TEntidade objeto)
         {
             try
@@ -465,7 +463,7 @@ namespace AppNFe.Persistencia.Repositorios
         }
         #endregion
 
-        #region Atualizar Registro no Banco de Dados
+        #region Atualizar Registro Async no Banco de Dados
         public virtual Retorno Atualizar(TEntidade objeto)
         {
             try
@@ -481,7 +479,7 @@ namespace AppNFe.Persistencia.Repositorios
         }
         #endregion
 
-        #region Excluir Registro no Banco de Dados
+        #region Excluir Registro Sync no Banco de Dados
         public virtual Retorno Excluir(long codigo)
         {
             try
@@ -530,7 +528,7 @@ namespace AppNFe.Persistencia.Repositorios
         }
         #endregion
 
-        #region  Insere registro  no banco de dados e registra a atividade do usuário
+        #region  InserirAsync - Registro Async no Banco de Dados
         /// <summary>
         /// Insere registro  no banco de dados e registra a atividade do usuário
         /// </summary>

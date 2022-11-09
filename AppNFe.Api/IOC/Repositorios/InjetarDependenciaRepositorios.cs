@@ -12,6 +12,7 @@ namespace AppNFe.Api.IOC.Repositorios
             services.AddScoped<IEmpresaRepositorio, EmpresaRepositorio>();
             services.AddScoped<IPessoaRepositorio, PessoaRepositorio>();
             services.AddScoped<IMovimentoRepositorio, MovimentoRepositorio>();
+            services.AddScoped<IProdutoRepositorio, ProdutoRepositorio>();
             services.AddScoped<IConfiguracaoFiscalRepositorio, ConfiguracaoFiscalRepositorio>();
 
         }

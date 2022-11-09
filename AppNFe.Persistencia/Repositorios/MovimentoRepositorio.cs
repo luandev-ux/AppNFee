@@ -15,6 +15,7 @@ using System.Text;
 using AppNFe.Dominio.Entidades;
 using AppNFe.Persistencia.Interfaces.Repositorios;
 using AppNFe.Dominio.Entidades.Pessoas;
+using AppNFe.Dominio.Entidades.Movimentos;
 
 namespace AppNFe.Persistencia.Repositorios
 {

@@ -1,10 +1,11 @@
 ﻿using AppNFe.Core.MensagemPadronizada;
+using AppNFe.Dominio.Entidades.Pessoas;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace AppNFe.Dominio.Entidades.Pessoas
+namespace AppNFe.Dominio.Entidades.Movimentos
 {
     public class Movimento
     {
