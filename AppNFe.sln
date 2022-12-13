@@ -23,6 +23,28 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppNFe.Servicos", "AppNFe.S
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppNFe.Core", "AppNFe.Core\AppNFe.Core.csproj", "{C1B709AB-2B47-489E-8779-A504A0E339E2}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "dist", "dist", "{981AE0BF-F0DA-44AA-9A08-20F76A320264}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\..\Downloads\swagger-ui-4.15.5 (1)\swagger-ui-4.15.5\dist\favicon-16x16.png = ..\..\..\Downloads\swagger-ui-4.15.5 (1)\swagger-ui-4.15.5\dist\favicon-16x16.png
+		..\..\..\Downloads\swagger-ui-4.15.5 (1)\swagger-ui-4.15.5\dist\favicon-32x32.png = ..\..\..\Downloads\swagger-ui-4.15.5 (1)\swagger-ui-4.15.5\dist\favicon-32x32.png
+		..\..\..\Downloads\swagger-ui-4.15.5 (1)\swagger-ui-4.15.5\dist\index.css = ..\..\..\Downloads\swagger-ui-4.15.5 (1)\swagger-ui-4.15.5\dist\index.css
+		..\..\..\Downloads\swagger-ui-4.15.5 (1)\swagger-ui-4.15.5\dist\index.html = ..\..\..\Downloads\swagger-ui-4.15.5 (1)\swagger-ui-4.15.5\dist\index.html
+		..\..\..\Downloads\swagger-ui-4.15.5 (1)\swagger-ui-4.15.5\dist\oauth2-redirect.html = ..\..\..\Downloads\swagger-ui-4.15.5 (1)\swagger-ui-4.15.5\dist\oauth2-redirect.html
+		..\..\..\Downloads\swagger-ui-4.15.5 (1)\swagger-ui-4.15.5\dist\swagger-initializer.js = ..\..\..\Downloads\swagger-ui-4.15.5 (1)\swagger-ui-4.15.5\dist\swagger-initializer.js
+		..\..\..\Downloads\swagger-ui-4.15.5 (1)\swagger-ui-4.15.5\dist\swagger-ui-bundle.js = ..\..\..\Downloads\swagger-ui-4.15.5 (1)\swagger-ui-4.15.5\dist\swagger-ui-bundle.js
+		..\..\..\Downloads\swagger-ui-4.15.5 (1)\swagger-ui-4.15.5\dist\swagger-ui-bundle.js.map = ..\..\..\Downloads\swagger-ui-4.15.5 (1)\swagger-ui-4.15.5\dist\swagger-ui-bundle.js.map
+		..\..\..\Downloads\swagger-ui-4.15.5 (1)\swagger-ui-4.15.5\dist\swagger-ui-es-bundle-core.js = ..\..\..\Downloads\swagger-ui-4.15.5 (1)\swagger-ui-4.15.5\dist\swagger-ui-es-bundle-core.js
+		..\..\..\Downloads\swagger-ui-4.15.5 (1)\swagger-ui-4.15.5\dist\swagger-ui-es-bundle-core.js.map = ..\..\..\Downloads\swagger-ui-4.15.5 (1)\swagger-ui-4.15.5\dist\swagger-ui-es-bundle-core.js.map
+		..\..\..\Downloads\swagger-ui-4.15.5 (1)\swagger-ui-4.15.5\dist\swagger-ui-es-bundle.js = ..\..\..\Downloads\swagger-ui-4.15.5 (1)\swagger-ui-4.15.5\dist\swagger-ui-es-bundle.js
+		..\..\..\Downloads\swagger-ui-4.15.5 (1)\swagger-ui-4.15.5\dist\swagger-ui-es-bundle.js.map = ..\..\..\Downloads\swagger-ui-4.15.5 (1)\swagger-ui-4.15.5\dist\swagger-ui-es-bundle.js.map
+		..\..\..\Downloads\swagger-ui-4.15.5 (1)\swagger-ui-4.15.5\dist\swagger-ui-standalone-preset.js = ..\..\..\Downloads\swagger-ui-4.15.5 (1)\swagger-ui-4.15.5\dist\swagger-ui-standalone-preset.js
+		..\..\..\Downloads\swagger-ui-4.15.5 (1)\swagger-ui-4.15.5\dist\swagger-ui-standalone-preset.js.map = ..\..\..\Downloads\swagger-ui-4.15.5 (1)\swagger-ui-4.15.5\dist\swagger-ui-standalone-preset.js.map
+		..\..\..\Downloads\swagger-ui-4.15.5 (1)\swagger-ui-4.15.5\dist\swagger-ui.css = ..\..\..\Downloads\swagger-ui-4.15.5 (1)\swagger-ui-4.15.5\dist\swagger-ui.css
+		..\..\..\Downloads\swagger-ui-4.15.5 (1)\swagger-ui-4.15.5\dist\swagger-ui.css.map = ..\..\..\Downloads\swagger-ui-4.15.5 (1)\swagger-ui-4.15.5\dist\swagger-ui.css.map
+		..\..\..\Downloads\swagger-ui-4.15.5 (1)\swagger-ui-4.15.5\dist\swagger-ui.js = ..\..\..\Downloads\swagger-ui-4.15.5 (1)\swagger-ui-4.15.5\dist\swagger-ui.js
+		..\..\..\Downloads\swagger-ui-4.15.5 (1)\swagger-ui-4.15.5\dist\swagger-ui.js.map = ..\..\..\Downloads\swagger-ui-4.15.5 (1)\swagger-ui-4.15.5\dist\swagger-ui.js.map
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
